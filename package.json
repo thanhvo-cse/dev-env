@@ -1,0 +1,53 @@
+{
+  "name": "dev-env",
+  "description": "dev-env tool",
+  "version": "0.0.0",
+  "author": "Thanh Vo",
+  "bin": {
+    "dev-env": "./bin/run"
+  },
+  "bugs": "https://github.com/thanhvo-cse/dev-env/issues",
+  "dependencies": {
+    "@oclif/command": "^1.5.19",
+    "@oclif/config": "^1.13.3",
+    "@oclif/plugin-help": "^2.2.3",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.22.2",
+    "@types/node": "^10.17.12",
+    "globby": "^10.0.1",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/thanhvo-cse/dev-env",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "dev-env",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "thanhvo-cse/dev-env",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
