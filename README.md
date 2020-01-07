@@ -28,28 +28,25 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`dev-env hello [FILE]`](#dev-env-hello-file)
+* [`dev-env configure [COMMAND]`](#dev-env-configure-command)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
 
-## `dev-env hello [FILE]`
+## `dev-env configure [COMMAND]`
 
-describe the command here
+Manage configurations
 
 ```
 USAGE
-  $ dev-env hello [FILE]
+  $ dev-env configure [COMMAND]
+
+ARGUMENTS
+  COMMAND  (workspace:set|workspace:show|network:set|network:show) configure commands
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ dev-env hello
-  hello world from ./src/hello.ts!
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/hello.ts)_
+_See code: [src/commands/configure.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/configure.ts)_
 
 ## `dev-env help [COMMAND]`
 
