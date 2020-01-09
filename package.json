@@ -12,7 +12,8 @@
     "@oclif/config": "^1.13.3",
     "@oclif/plugin-help": "^2.2.3",
     "@types/fs-extra": "^8.0.1",
-    "googleapis": "^39.2.0",
+    "googleapis": "^46.0.0",
+    "readline-promise": "^1.0.4",
     "tslib": "^1.10.0"
   },
   "devDependencies": {

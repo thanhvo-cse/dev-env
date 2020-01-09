@@ -16,6 +16,8 @@ export default class Configure extends Command {
           'workspace:show',
           'network:set',
           'network:show',
+          'gdrive_project:set',
+          'gdrive_project:show',
       ],
     },
     {
@@ -31,23 +33,27 @@ export default class Configure extends Command {
   }
 
   async run() {
-    const {args, flags} = this.parse(Configure)
-
-    if (args.command != undefined) {
-      if (args.command == 'workspace:set') {
-        this.customConfig.set(CustomConfig.WORKSPACE_DIR, args.value)
-      } else if (args.command == 'workspace:show') {
+    if (this.args.command != undefined) {
+      if (this.args.command == 'workspace:set') {
+        this.customConfig.set(CustomConfig.WORKSPACE_DIR, this.args.value)
+      } else if (this.args.command == 'workspace:show') {
         console.log(await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
-      } else if (args.command == 'network:set') {
-        this.customConfig.set(CustomConfig.NETWORK, args.value)
-      } else if (args.command == 'network:show') {
+      } else if (this.args.command == 'network:set') {
+        this.customConfig.set(CustomConfig.NETWORK, this.args.value)
+      } else if (this.args.command == 'network:show') {
         console.log(await this.customConfig.get(CustomConfig.NETWORK))
+      } else if (this.args.command == 'gdrive_project:set') {
+        this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, this.args.value)
+      } else if (this.args.command == 'gdrive_project:show') {
+        console.log(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID))
       }
     } else {
       const workspace = await cli.prompt('Workspace dir?')
       this.customConfig.set(CustomConfig.WORKSPACE_DIR, workspace)
       const network = await cli.prompt('Network?')
       this.customConfig.set(CustomConfig.NETWORK, network)
+      const gdriveProject = await cli.prompt('Google drive project id?')
+      this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, gdriveProject)
     }
   }
 }

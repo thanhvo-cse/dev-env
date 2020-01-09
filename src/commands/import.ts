@@ -1,13 +1,14 @@
-import Command from '../base'
 import cli from 'cli-ux'
-import Env from './../libs/env'
+import Command from '../base'
+import Const from './../const'
+import Docker from './../libs/docker'
 
 export default class Import extends Command {
   static description = 'Import project'
 
   static args = [
     {
-      name: 'project',
+      name: Const.ARG_PROJECT,
       required: true,
       description: 'project name',
       hidden: false
@@ -18,15 +19,16 @@ export default class Import extends Command {
     ...Command.flags
   }
 
-  async run() {
-    const {args, flags} = this.parse(Import)
-    this.env.set(Env.PROJECT_NAME, args.project)
+  private docker: Docker = new Docker()
 
+  async run() {
     // start the spinner
     cli.action.start('starting downloading')
-    this.files.download(args.project, function() {
-      // stop the spinner
-      cli.action.stop()
-    })
+    await this.files.download(this.args[Const.ARG_PROJECT])
+    // stop the spinner
+    cli.action.stop()
+
+    // this.docker.up()
+    // this.docker.dbRestore()
   }
 }
