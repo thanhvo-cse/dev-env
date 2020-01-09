@@ -101,7 +101,7 @@ export class GoogleDrive {
         client_id, client_secret, redirect_uris[0])
 
     // Check if we have previously stored a token.
-    fs.readFile(this.TOKEN_PATH, (err, token) => {
+    fs.readFile(join(__dirname, this.TOKEN_PATH), (err, token) => {
       if (err) return this.getAccessToken(oAuth2Client, callback)
       oAuth2Client.setCredentials(JSON.parse(token + ''))
       callback(oAuth2Client)
@@ -130,9 +130,9 @@ export class GoogleDrive {
         if (err) return console.error('Error retrieving access token', err)
         oAuth2Client.setCredentials(token)
         // Store the token to disk for later program executions
-        fs.writeFile(this.TOKEN_PATH, JSON.stringify(token), (err) => {
+        fs.writeFile(join(__dirname, this.TOKEN_PATH), JSON.stringify(token), (err) => {
           if (err) return console.error(err)
-          console.log('Token stored to', this.TOKEN_PATH)
+          console.log('Token stored')
         })
         callback(oAuth2Client)
       })
