@@ -1,10 +1,8 @@
 import Command from '../base'
-import Configs from '../libs/configs'
 import cli from 'cli-ux'
+import CustomConfig from "../libs/customConfig";
 
 export default class Configure extends Command {
-  private configs = new Configs()
-
   static description = 'Manage configurations'
 
   static args = [
@@ -24,7 +22,7 @@ export default class Configure extends Command {
       name: 'value',
       required: false,
       description: 'configure values',
-      hidden: true
+      hidden: false
     }
   ]
 
@@ -37,19 +35,19 @@ export default class Configure extends Command {
 
     if (args.command != undefined) {
       if (args.command == 'workspace:set') {
-        this.configs.set('workspace', args.value)
+        this.customConfig.set(CustomConfig.WORKSPACE_DIR, args.value)
       } else if (args.command == 'workspace:show') {
-        console.log(await this.configs.get('workspace'))
+        console.log(await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
       } else if (args.command == 'network:set') {
-        this.configs.set('network', args.value)
+        this.customConfig.set(CustomConfig.NETWORK, args.value)
       } else if (args.command == 'network:show') {
-        console.log(await this.configs.get('network'))
+        console.log(await this.customConfig.get(CustomConfig.NETWORK))
       }
     } else {
       const workspace = await cli.prompt('Workspace dir?')
-      this.configs.set('workspace', workspace)
+      this.customConfig.set(CustomConfig.WORKSPACE_DIR, workspace)
       const network = await cli.prompt('Network?')
-      this.configs.set('network', network)
+      this.customConfig.set(CustomConfig.NETWORK, network)
     }
   }
 }
