@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import {join} from 'path'
-import readline from 'readline-promise';
+import readline from 'readline-promise'
 import {google} from 'googleapis'
 
 export class GoogleDrive {
@@ -30,7 +30,8 @@ export class GoogleDrive {
     if (folder[0]) {
       const files = await this.find(`parents in '${folder[0].id}'`)
 
-      Promise.all(files.map(async (item: any) => {
+      for (let i = 0; i < files.length; i++) {
+        const item = files[i]
         var destFile = fs.createWriteStream(join(dest, item.name))
         try {
           const res = await this.drive.files.get(
@@ -46,7 +47,7 @@ export class GoogleDrive {
         } catch (e) {
           console.log('Error', e.message)
         }
-      }))
+      }
     }
   }
 

@@ -23,12 +23,13 @@ export default class Files {
     await this.initialize()
 
     const dest = join(await this.projectDir, target)
-    fs.mkdirSync(dest, { recursive: true })
+    // fs.mkdirSync(dest, { recursive: true })
 
-    await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), target, dest)
+    // await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), target, dest)
 
-    // const source = join(target, 'database.sql')
-    // const dest = join(this.sharedDir, 'sql')
-    // fs.createReadStream(source).pipe(fs.createWriteStream(dest))
+    console.log(join(dest, 'database.sql'))
+    const source = join(dest, 'database.sql')
+    const sharedDest = join(this.sharedDir, 'sql', 'database.sql')
+    fs.createReadStream(source).pipe(fs.createWriteStream(sharedDest))
   }
 }
