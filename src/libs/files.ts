@@ -10,26 +10,15 @@ export default class Files {
   private env: Env = new Env()
   private customConfig: CustomConfig = new CustomConfig()
 
-  private projectDir: string = ''
-  private sharedDir: string = ''
+  async download(project: string, callback?: any) {
+    const dest = join(await this.env.get(Env.PROJECT_DIR), project)
+    fs.mkdirSync(dest, { recursive: true })
 
-  async initialize() {
-    const dataDir = await this.env.get(Env.CONFIG_DATA_DIR)
-    this.projectDir = join(dataDir, Const.DATA_PROJECT_DIR)
-    this.sharedDir = join(dataDir, Const.DATA_SHARED_DIR)
+    await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), project, dest)
   }
 
-  async download(target:string, callback?: any) {
-    await this.initialize()
-
-    const dest = join(await this.projectDir, target)
-    // fs.mkdirSync(dest, { recursive: true })
-
-    // await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), target, dest)
-
-    console.log(join(dest, 'database.sql'))
-    const source = join(dest, 'database.sql')
-    const sharedDest = join(this.sharedDir, 'sql', 'database.sql')
-    fs.createReadStream(source).pipe(fs.createWriteStream(sharedDest))
+  async move(project: string, source: string, target: string) {
+    const sourceFile = join(join(await this.env.get(Env.PROJECT_DIR), project), source)
+    fs.createReadStream(sourceFile).pipe(fs.createWriteStream(target))
   }
 }

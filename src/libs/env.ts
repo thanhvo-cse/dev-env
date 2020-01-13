@@ -6,6 +6,7 @@ export default class Env {
     static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
     static readonly PROJECT_DIR: string = 'PROJECT_DIR'
     static readonly SHARED_DIR: string = 'SHARED_DIR'
+
     static readonly REMOTE_HOST: string = 'REMOTE_HOST'
     static readonly PROJECT_NAME: string = 'PROJECT_NAME'
 

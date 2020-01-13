@@ -10,6 +10,7 @@ export default class CustomConfig {
   static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
   static readonly NETWORK: string = 'NETWORK'
   static readonly GDRIVE_PROJECT_ID: string = 'GDRIVE_PROJECT_ID'
+  static readonly ADMIN_DIR: string = 'ADMIN_DIR'
 
   private env: Env = new Env()
 
@@ -34,7 +35,5 @@ export default class CustomConfig {
 
       this.configs = fs.readJsonSync(this.configPath)
     }
-
-    return this.configs
   }
 }

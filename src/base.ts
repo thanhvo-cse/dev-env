@@ -4,6 +4,7 @@ import Const from './const'
 import Env from "./libs/env"
 import AppConfig from "./libs/appConfigs"
 import CustomConfig from "./libs/customConfig"
+import ProjectConfig from "./libs/projectConfig"
 import Shell from './libs/shell'
 import Files from "./libs/files";
 import {join} from "path";
@@ -12,6 +13,7 @@ export default abstract class extends Command {
     protected env: Env = new Env()
     protected appConfig: AppConfig = new AppConfig()
     protected customConfig: CustomConfig = new CustomConfig()
+    protected projectConfig: ProjectConfig = new ProjectConfig()
     protected files: Files = new Files()
     protected shell: Shell = new Shell()
 

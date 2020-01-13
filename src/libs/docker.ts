@@ -2,45 +2,37 @@ import {join} from 'path'
 import Shell from './shell'
 import Env from './Env'
 import Const from './../const'
+import * as fs from "fs-extra";
 
 export default class Docker {
     private shell: Shell = new Shell()
     private env: Env = new Env()
 
-    private projectName: string = ''
+    private projectConfigs: any
 
-    async up() {
-        await this.runWithSystem('up')
+    async up(project: string) {
+        await this.runWithSystem(project, 'up -d')
     }
 
-    async down() {
-        await this.run('down')
+    async down(project: string) {
+        await this.run(project, 'down')
     }
 
-    async dbRestore() {
-        await this.exec('db', `mysql -u root -p123456 < /home/${this.projectName}.sql`)
+    async dbRestore(project: string) {
+        await this.exec(project, 'db', `mysql -u root -p123456 < /home/database.sql`)
     }
 
-    private async initialize() {
-        if (this.projectName == '') {
-            this.projectName = await this.env.get(Env.PROJECT_NAME)
-        }
-    }
-
-    private async run(cmd: string) {
-        await this.initialize()
+    private async run(project: string, cmd: string) {
         const projectDir = await this.env.get(Env.PROJECT_DIR)
-        let {stdout} = await this.shell.sh(`docker-compose -f ${projectDir}/${this.projectName}/docker-compose.yml ${cmd} -d`);
+        let {stdout} = await this.shell.sh(`docker-compose -f ${projectDir}/${project}/docker-compose.yml ${cmd}`);
     }
 
-    private async runWithSystem(cmd: string) {
-        await this.initialize()
+    private async runWithSystem(project: string, cmd: string) {
         const projectDir = await this.env.get(Env.PROJECT_DIR)
-        let {stdout} = await this.shell.sh(`docker-compose -f ${projectDir}/system/docker-compose.yml -f ${projectDir}/${this.projectName}/docker-compose.yml ${cmd} -d`);
+        let {stdout} = await this.shell.sh(`docker-compose -f ${projectDir}/system/docker-compose.yml -f ${projectDir}/${project}/docker-compose.yml ${cmd}`);
     }
 
-    private async exec(container: string, cmd: string) {
-        await this.initialize()
-        let {stdout} = await this.shell.sh(`docker exec -it ${container}_${this.projectName} bash -c "${cmd}"`);
+    private async exec(project: string, container: string, cmd: string) {
+        let {stdout} = await this.shell.sh(`docker exec -i ${container}_${project} bash -c "${cmd}"`);
     }
 }

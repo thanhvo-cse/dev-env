@@ -18,6 +18,8 @@ export default class Configure extends Command {
           'network:show',
           'gdrive_project:set',
           'gdrive_project:show',
+          'admin_dir:set',
+          'admin_dir:show',
       ],
     },
     {
@@ -46,6 +48,10 @@ export default class Configure extends Command {
         this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, this.args.value)
       } else if (this.args.command == 'gdrive_project:show') {
         console.log(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID))
+      } else if (this.args.command == 'admin_dir:set') {
+        this.customConfig.set(CustomConfig.ADMIN_DIR, this.args.value)
+      } else if (this.args.command == 'admin_dir:show') {
+        console.log(await this.customConfig.get(CustomConfig.ADMIN_DIR))
       }
     } else {
       const workspace = await cli.prompt('Workspace dir?')
@@ -54,6 +60,8 @@ export default class Configure extends Command {
       this.customConfig.set(CustomConfig.NETWORK, network)
       const gdriveProject = await cli.prompt('Google drive project id?')
       this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, gdriveProject)
+      const adminDir = await cli.prompt('Admin dir?')
+      this.customConfig.set(CustomConfig.ADMIN_DIR, adminDir)
     }
   }
 }
