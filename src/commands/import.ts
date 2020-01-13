@@ -46,14 +46,17 @@ export default class Import extends Command {
     cli.action.stop()
 
     if (!fs.existsSync(join(sharedProjectDir, Const.DB_DIR))) {
+      cli.action.start('checkout codebase')
       const gitRepo = await this.projectConfig.get(ProjectConfig.GIT_REPO)
       this.shell.sh(`git clone ${gitRepo} $WORKSPACE_DIR/$PROJECT_NAME`)
+      cli.action.stop()
     }
 
     cli.action.start('docker up')
     await this.docker.up(project)
     cli.action.stop()
-    cli.action.start('importing database')
+
+    cli.action.start('import database')
     await this.docker.dbRestore(project)
     cli.action.stop()
   }
