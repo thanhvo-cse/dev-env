@@ -10,6 +10,10 @@ export default class DockerSource extends Docker{
     await this.run(project, 'restart -d -build')
   }
 
+  async push(project: string) {
+    await this.runWithSystem(project, 'push')
+  }
+
   protected async getDockerDir() {
     return await this.env.get(Env.DOCKER_SOURCE_DIR)
   }

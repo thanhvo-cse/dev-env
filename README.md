@@ -28,25 +28,101 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`dev-env configure [COMMAND]`](#dev-env-configure-command)
+* [`dev-env cleanup`](#dev-env-cleanup)
+* [`dev-env configure [COMMAND] [VALUE]`](#dev-env-configure-command-value)
+* [`dev-env docker PROJECT COMMAND`](#dev-env-docker-project-command)
+* [`dev-env down PROJECT`](#dev-env-down-project)
+* [`dev-env export PROJECT`](#dev-env-export-project)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
+* [`dev-env import PROJECT`](#dev-env-import-project)
+* [`dev-env restart PROJECT`](#dev-env-restart-project)
+* [`dev-env up PROJECT`](#dev-env-up-project)
 
-## `dev-env configure [COMMAND]`
+## `dev-env cleanup`
+
+Cleanup docker environment
+
+```
+USAGE
+  $ dev-env cleanup
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/cleanup.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/cleanup.ts)_
+
+## `dev-env configure [COMMAND] [VALUE]`
 
 Manage configurations
 
 ```
 USAGE
-  $ dev-env configure [COMMAND]
+  $ dev-env configure [COMMAND] [VALUE]
 
 ARGUMENTS
-  COMMAND  (workspace:set|workspace:show|network:set|network:show) configure commands
+  COMMAND  (workspace:set|workspace:show|network:set|network:show|gdrive_project:set|gdrive_project:show|docker_source_d
+           ir:set|docker_source_dir:show) configure commands
+
+  VALUE    configure values
 
 OPTIONS
   -h, --help  show CLI help
 ```
 
 _See code: [src/commands/configure.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/configure.ts)_
+
+## `dev-env docker PROJECT COMMAND`
+
+Manage docker env
+
+```
+USAGE
+  $ dev-env docker PROJECT COMMAND
+
+ARGUMENTS
+  PROJECT  project name
+  COMMAND  (up|down|restart|rebuild) docker commands
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/docker.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/docker.ts)_
+
+## `dev-env down PROJECT`
+
+Down a project
+
+```
+USAGE
+  $ dev-env down PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/down.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/down.ts)_
+
+## `dev-env export PROJECT`
+
+Export project
+
+```
+USAGE
+  $ dev-env export PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/export.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/export.ts)_
 
 ## `dev-env help [COMMAND]`
 
@@ -64,4 +140,56 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
+## `dev-env import PROJECT`
+
+Import project
+
+```
+USAGE
+  $ dev-env import PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/import.ts)_
+
+## `dev-env restart PROJECT`
+
+Restart a project
+
+```
+USAGE
+  $ dev-env restart PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/restart.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/restart.ts)_
+
+## `dev-env up PROJECT`
+
+Up a project
+
+```
+USAGE
+  $ dev-env up PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -b, --build  build
+  -h, --help   show CLI help
+```
+
+_See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/up.ts)_
 <!-- commandsstop -->

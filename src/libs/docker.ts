@@ -8,7 +8,7 @@ export default class Docker {
   protected projectConfigs: any
 
   async up(project: string) {
-    await this.runWithSystem(project, 'up -d --no-build')
+    await this.runWithSystem(project, 'up -d')
   }
 
   async down(project: string) {
@@ -16,7 +16,7 @@ export default class Docker {
   }
 
   async restart(project: string) {
-    await this.run(project, 'restart -d --no-build')
+    await this.run(project, 'restart -d')
   }
 
   async dbRestore(project: string) {
