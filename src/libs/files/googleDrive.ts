@@ -53,15 +53,42 @@ export class GoogleDrive {
     if (file[0]) {
       const item = file[0]
       try {
-        const res = await this.drive.files.get(
+        await this.drive.files.get(
           {
             fileId: item.id,
             alt: 'media'
           },
           {responseType: 'stream'}
+        ).then(res => {
+            return new Promise((resolve, reject) => {
+              let progress = 0;
+              let buf = [];
+              res.data
+                .on('data', d => {
+                  buf.push(d)
+                  progress += d.length;
+                  if (process.stdout.isTTY) {
+                    process.stdout.clearLine()
+                    process.stdout.cursorTo(0)
+                    process.stdout.write(`Downloaded ${progress} bytes`)
+                  }
+                })
+                .on('end', () => {
+                  const buffer = Buffer.concat(buf)
+                  const filePath = join(dest, '../', item.name)
+                  fs.writeFileSync(filePath, buffer)
+                  fs.createReadStream(filePath).pipe(unzipper.Extract({ path: dest }));
+                  resolve()
+                  console.log('\nFinish streaming')
+                })
+                .on('error', err => {
+                  console.error('Error downloading file.\n');
+                  reject(err);
+                })
+            })
+          }
         )
 
-        res.data.pipe(unzipper.Extract({ path: dest }))
         console.log(`Download completed: ${item.name}`)
       } catch (e) {
         console.log('Error', e.message)
