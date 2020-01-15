@@ -32,9 +32,9 @@ export default class Export extends Command {
     const dockerSourceDir = await this.env.get(Env.DOCKER_SOURCE_DIR)
     const projectDir = await this.env.get(Env.PROJECT_DIR)
 
-    // cli.action.start('push docker images')
-    // await this.dockerSource.push(project)
-    // cli.action.stop()
+    cli.action.start('push docker images')
+    await this.dockerSource.push(project)
+    cli.action.stop()
 
     cli.action.start('copy files')
     if (fs.existsSync(join(dockerSourceDir, 'system'))) {

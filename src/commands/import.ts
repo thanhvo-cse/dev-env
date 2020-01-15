@@ -30,8 +30,7 @@ export default class Import extends Command {
 
     cli.action.start('download files')
     await this.files.download('system')
-    // await this.files.download(project)
-    process.exit()
+    await this.files.download(project)
     const sharedDir = await this.env.get(Env.SHARED_DIR)
     const sharedProjectDir = join(sharedDir, project)
 
