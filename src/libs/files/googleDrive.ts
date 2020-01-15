@@ -60,8 +60,10 @@ export class GoogleDrive {
           },
           {responseType: 'stream'}
         )
-
-        res.data.pipe(unzipper.Extract({ path: dest }))
+        console.log(res.data._readableState.buffer.head);
+        fs.writeFileSync(join(dest, item.name), res.data._readableState.buffer.head.data)
+        // res.data.pipe(fs.createWriteStream(join(dest, item.name)))
+        // // res.data.pipe(unzipper.Extract({ path: dest }))
         console.log(`Download completed: ${item.name}`)
       } catch (e) {
         console.log('Error', e.message)
