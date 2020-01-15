@@ -21,7 +21,7 @@ export default class CustomConfig {
 
   async set(key: string, value: any) {
     await this.initialize()
-    this.configs = {...this.configs, ...{ [key]: value }}
+    this.configs = {...this.configs, ...{[key]: value}}
     fs.writeJsonSync(this.configPath, this.configs)
   }
 

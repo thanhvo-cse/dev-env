@@ -7,7 +7,7 @@ import * as unzipper from 'unzipper'
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
   private readonly SCOPES = [
-      'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive',
   ]
 
   private oAuth2Client: any
@@ -32,7 +32,7 @@ export class GoogleDrive {
       const res = await this.drive.files.create({
         resource: {
           'name': fileName,
-          parents: [ root ]
+          parents: [root]
         },
         media: {
           mimeType: 'application/zip',
@@ -77,7 +77,7 @@ export class GoogleDrive {
                   const buffer = Buffer.concat(buf)
                   const filePath = join(dest, '../', item.name)
                   fs.writeFileSync(filePath, buffer)
-                  fs.createReadStream(filePath).pipe(unzipper.Extract({ path: dest }));
+                  fs.createReadStream(filePath).pipe(unzipper.Extract({path: dest}));
                   resolve()
                   console.log('\nFinish streaming')
                 })

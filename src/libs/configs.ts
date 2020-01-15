@@ -23,7 +23,7 @@ export default class Configs {
 
   async set(key: string, value: any) {
     let newConfig = {}
-    this.configs = {...this.configs, ...{ [key]: value }}
+    this.configs = {...this.configs, ...{[key]: value}}
 
     writeFileSync(resolve(process.env.HOME as string, this.configDir), JSON.stringify(this.configs), {
       encoding: 'UTF-8',

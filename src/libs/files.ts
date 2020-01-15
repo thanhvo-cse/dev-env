@@ -13,7 +13,7 @@ export default class Files {
   async download(project: string) {
     const source = `${project}.zip`
     const dest = join(await this.env.get(Env.PROJECT_DIR), project)
-    fs.mkdirSync(dest, { recursive: true })
+    fs.mkdirSync(dest, {recursive: true})
 
     await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), source, dest)
   }

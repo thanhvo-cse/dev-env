@@ -1,7 +1,7 @@
 import Env from './Env'
 import Docker from './docker'
 
-export default class DockerSource extends Docker{
+export default class DockerSource extends Docker {
   async up(project: string) {
     await this.runWithSystem(project, 'up -d --build')
   }

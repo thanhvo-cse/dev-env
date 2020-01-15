@@ -52,8 +52,8 @@ export default class Export extends Command {
     cli.action.stop()
 
     cli.action.start('zip files')
-    await zip(join(projectDir, 'system'), join(projectDir, `system.zip`));
-    await zip(join(projectDir, project), join(projectDir, `${project}.zip`));
+    await zip(join(projectDir, 'system'), join(projectDir, `system.zip`))
+    await zip(join(projectDir, project), join(projectDir, `${project}.zip`))
     cli.action.stop()
 
     cli.action.start('upload files')
@@ -68,7 +68,7 @@ export default class Export extends Command {
     let newDataArray = dataArray
     const searchKeyword = 'build: ./';
 
-    for (let index=0; index<dataArray.length; index++) {
+    for (let index = 0; index < dataArray.length; index++) {
       if (dataArray[index].includes(searchKeyword)) {
         newDataArray.splice(index, 1);
       }
