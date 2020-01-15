@@ -11,6 +11,7 @@ export default class CustomConfig {
   static readonly NETWORK: string = 'NETWORK'
   static readonly GDRIVE_PROJECT_ID: string = 'GDRIVE_PROJECT_ID'
   static readonly DOCKER_SOURCE_DIR: string = 'DOCKER_SOURCE_DIR'
+  static readonly XDEBUG_IDE_KEY: string = 'XDEBUG_IDE_KEY'
 
   private env: Env = new Env()
 

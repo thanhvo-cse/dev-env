@@ -32,9 +32,9 @@ export default class Export extends Command {
     const dockerSourceDir = await this.env.get(Env.DOCKER_SOURCE_DIR)
     const projectDir = await this.env.get(Env.PROJECT_DIR)
 
-    cli.action.start('push docker images')
-    await this.dockerSource.push(project)
-    cli.action.stop()
+    // cli.action.start('push docker images')
+    // await this.dockerSource.push(project)
+    // cli.action.stop()
 
     cli.action.start('copy files')
     if (fs.existsSync(join(dockerSourceDir, 'system'))) {
@@ -66,7 +66,7 @@ export default class Export extends Command {
     const data = fs.readFileSync(file, 'utf-8')
     let dataArray = data.split('\n');
     let newDataArray = dataArray
-    const searchKeyword = 'build: ./';
+    const searchKeyword = 'build:';
 
     for (let index = 0; index < dataArray.length; index++) {
       if (dataArray[index].includes(searchKeyword)) {

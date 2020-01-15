@@ -19,7 +19,7 @@ $ npm install -g dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-dev-env/0.0.0 darwin-x64 node-v12.14.0
+dev-env/0.0.0 darwin-x64 node-v12.14.1
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -28,15 +28,40 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`dev-env artisan PROJECT`](#dev-env-artisan-project)
 * [`dev-env cleanup`](#dev-env-cleanup)
+* [`dev-env composer PROJECT`](#dev-env-composer-project)
 * [`dev-env configure [COMMAND] [VALUE]`](#dev-env-configure-command-value)
-* [`dev-env docker PROJECT COMMAND`](#dev-env-docker-project-command)
 * [`dev-env down PROJECT`](#dev-env-down-project)
 * [`dev-env export PROJECT`](#dev-env-export-project)
+* [`dev-env grunt PROJECT`](#dev-env-grunt-project)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
 * [`dev-env import PROJECT`](#dev-env-import-project)
+* [`dev-env magento PROJECT`](#dev-env-magento-project)
+* [`dev-env magerun PROJECT`](#dev-env-magerun-project)
+* [`dev-env mysql PROJECT COMMAND [FILE]`](#dev-env-mysql-project-command-file)
+* [`dev-env npm PROJECT`](#dev-env-npm-project)
+* [`dev-env php PROJECT`](#dev-env-php-project)
 * [`dev-env restart PROJECT`](#dev-env-restart-project)
 * [`dev-env up PROJECT`](#dev-env-up-project)
+
+## `dev-env artisan PROJECT`
+
+Magerun
+
+```
+USAGE
+  $ dev-env artisan PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -d, --debug  debug flag
+  -h, --help   show CLI help
+```
+
+_See code: [src/commands/artisan.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/artisan.ts)_
 
 ## `dev-env cleanup`
 
@@ -52,6 +77,23 @@ OPTIONS
 
 _See code: [src/commands/cleanup.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/cleanup.ts)_
 
+## `dev-env composer PROJECT`
+
+Composer
+
+```
+USAGE
+  $ dev-env composer PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/composer.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/composer.ts)_
+
 ## `dev-env configure [COMMAND] [VALUE]`
 
 Manage configurations
@@ -62,7 +104,7 @@ USAGE
 
 ARGUMENTS
   COMMAND  (workspace:set|workspace:show|network:set|network:show|gdrive_project:set|gdrive_project:show|docker_source_d
-           ir:set|docker_source_dir:show) configure commands
+           ir:set|docker_source_dir:show|xdebug_ide_key:set|xdebug_ide_key:show) configure commands
 
   VALUE    configure values
 
@@ -71,24 +113,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/configure.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/configure.ts)_
-
-## `dev-env docker PROJECT COMMAND`
-
-Manage docker env
-
-```
-USAGE
-  $ dev-env docker PROJECT COMMAND
-
-ARGUMENTS
-  PROJECT  project name
-  COMMAND  (up|down|restart|rebuild) docker commands
-
-OPTIONS
-  -h, --help  show CLI help
-```
-
-_See code: [src/commands/docker.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/docker.ts)_
 
 ## `dev-env down PROJECT`
 
@@ -124,6 +148,23 @@ OPTIONS
 
 _See code: [src/commands/export.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/export.ts)_
 
+## `dev-env grunt PROJECT`
+
+Grunt
+
+```
+USAGE
+  $ dev-env grunt PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/grunt.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/grunt.ts)_
+
 ## `dev-env help [COMMAND]`
 
 display help for dev-env
@@ -157,6 +198,96 @@ OPTIONS
 ```
 
 _See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/import.ts)_
+
+## `dev-env magento PROJECT`
+
+Magento
+
+```
+USAGE
+  $ dev-env magento PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -d, --debug  debug flag
+  -h, --help   show CLI help
+```
+
+_See code: [src/commands/magento.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/magento.ts)_
+
+## `dev-env magerun PROJECT`
+
+Magerun
+
+```
+USAGE
+  $ dev-env magerun PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -d, --debug  debug flag
+  -h, --help   show CLI help
+```
+
+_See code: [src/commands/magerun.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/magerun.ts)_
+
+## `dev-env mysql PROJECT COMMAND [FILE]`
+
+Mysql
+
+```
+USAGE
+  $ dev-env mysql PROJECT COMMAND [FILE]
+
+ARGUMENTS
+  PROJECT  project name
+  COMMAND  (backup|restore) mysql commands
+  FILE     file path
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/mysql.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/mysql.ts)_
+
+## `dev-env npm PROJECT`
+
+Npm
+
+```
+USAGE
+  $ dev-env npm PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/npm.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/npm.ts)_
+
+## `dev-env php PROJECT`
+
+Php
+
+```
+USAGE
+  $ dev-env php PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -d, --debug  debug flag
+  -h, --help   show CLI help
+```
+
+_See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/php.ts)_
 
 ## `dev-env restart PROJECT`
 

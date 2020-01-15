@@ -28,6 +28,19 @@ export default class Import extends Command {
   async run() {
     const project = this.args[Const.ARG_PROJECT]
 
+    await this.shell.sh(`
+      if ! grep -q local-adminer.legato.co "/etc/hosts"; then
+          sudo -- sh -c -e "echo '127.0.0.1 local-adminer.legato.co' >> /etc/hosts"
+      fi
+    `)
+
+    await this.shell.sh(`
+      if ! grep -q local-${project}.legato.co "/etc/hosts"; then
+          sudo -- sh -c -e "echo '127.0.0.1 local-${project}.legato.co' >> /etc/hosts"
+          echo "Host name local-${project}.legato.co is added successfully"
+      fi
+    `)
+
     cli.action.start('download files')
     await this.files.download('system')
     await this.files.download(project)
@@ -45,10 +58,11 @@ export default class Import extends Command {
     await this.files.copy(project, Const.DB_FILE, join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))
     cli.action.stop()
 
-    if (!fs.existsSync(join(sharedProjectDir, Const.DB_DIR))) {
+    const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
+    if (!fs.existsSync(projectWorkspace)) {
       cli.action.start('checkout codebase')
       const gitRepo = await this.projectConfig.get(ProjectConfig.GIT_REPO)
-      await this.shell.sh(`git clone ${gitRepo} $WORKSPACE_DIR/$PROJECT_NAME`)
+      await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
       cli.action.stop()
     }
 
@@ -59,5 +73,7 @@ export default class Import extends Command {
     cli.action.start('import database')
     await this.docker.dbRestore(project)
     cli.action.stop()
+
+    this.log('URL: ', await this.projectConfig.get(ProjectConfig.ACCESS_URL))
   }
 }

@@ -2,7 +2,6 @@ import * as fs from 'fs'
 import {join} from 'path'
 import readline from 'readline-promise'
 import {google} from 'googleapis'
-import * as unzipper from 'unzipper'
 
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
@@ -77,7 +76,6 @@ export class GoogleDrive {
                   const buffer = Buffer.concat(buf)
                   const filePath = join(dest, '../', item.name)
                   fs.writeFileSync(filePath, buffer)
-                  fs.createReadStream(filePath).pipe(unzipper.Extract({path: dest}));
                   resolve()
                   console.log('\nFinish streaming')
                 })
