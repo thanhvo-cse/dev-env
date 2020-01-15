@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import {join} from 'path'
 import readline from 'readline-promise'
 import {google} from 'googleapis'
+import * as unzipper from 'unzipper'
 
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
@@ -25,29 +26,61 @@ export class GoogleDrive {
     this.drive = google.drive({version: 'v3', auth: this.oAuth2Client})
   }
 
-  async download(root: string, target: string, dest: string) {
-    const folder = await this.find(`parents in '${root}' and name='${target}'`)
-    if (folder[0]) {
-      const files = await this.find(`parents in '${folder[0].id}'`)
+  async upload(filePath: string, root: string, fileName: string) {
+    this.remove(root, fileName)
+    try {
+      const res = await this.drive.files.create({
+        resource: {
+          'name': fileName,
+          parents: [ root ]
+        },
+        media: {
+          mimeType: 'application/zip',
+          body: fs.createReadStream(filePath)
+        },
+        fields: 'id'
+      })
 
-      for (let i = 0; i < files.length; i++) {
-        const item = files[i]
-        var destFile = fs.createWriteStream(join(dest, item.name))
-        try {
-          const res = await this.drive.files.get(
-              {
-                fileId: item.id,
-                alt: 'media'
-              },
-              {responseType: 'stream'}
-          )
+      console.log(`Upload completed: ${fileName}`)
+    } catch (e) {
+      console.log('The API returned an error: ' + e.message)
+    }
+  }
 
-          res.data.pipe(destFile)
-          console.log(`Download completed: ${item.name}`)
-        } catch (e) {
-          console.log('Error', e.message)
-        }
+  async download(root: string, fileName: string, dest: string) {
+    const file = await this.find(`parents in '${root}' and name='${fileName}'`)
+
+    if (file[0]) {
+      const item = file[0]
+      try {
+        const res = await this.drive.files.get(
+          {
+            fileId: item.id,
+            alt: 'media'
+          },
+          {responseType: 'stream'}
+        )
+
+        res.data.pipe(unzipper.Extract({ path: dest }))
+        console.log(`Download completed: ${item.name}`)
+      } catch (e) {
+        console.log('Error', e.message)
       }
+    }
+  }
+
+  private async remove(root: string, fileName: string) {
+    try {
+      await this.authorize()
+      const file = await this.find(`parents in '${root}' and name='${fileName}'`)
+      if (file[0]) {
+        const files = await this.find(`parents in '${file[0].id}'`)
+        const res = this.drive.files.delete({
+          'fileId': file[0].id
+        });
+      }
+    } catch (e) {
+      console.log('The API returned an error: ' + e.message)
     }
   }
 

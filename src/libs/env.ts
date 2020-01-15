@@ -4,6 +4,7 @@ export default class Env {
     static readonly CONFIG_CONFIG_DIR: string = 'CONFIG_CONFIG_DIR'
 
     static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
+    static readonly DOCKER_SOURCE_DIR: string = 'DOCKER_SOURCE_DIR'
     static readonly PROJECT_DIR: string = 'PROJECT_DIR'
     static readonly SHARED_DIR: string = 'SHARED_DIR'
 

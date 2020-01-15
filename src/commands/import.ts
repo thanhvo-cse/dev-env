@@ -4,7 +4,6 @@ import {join} from 'path'
 import Command from '../base'
 import Const from './../const'
 import Docker from './../libs/docker'
-import {mkdirSync} from "fs";
 import Env from "./../libs/env"
 import ProjectConfig from "./../libs/projectConfig"
 
@@ -30,25 +29,26 @@ export default class Import extends Command {
     const project = this.args[Const.ARG_PROJECT]
 
     cli.action.start('download files')
+    await this.files.download('system')
     await this.files.download(project)
     const sharedDir = await this.env.get(Env.SHARED_DIR)
     const sharedProjectDir = join(sharedDir, project)
 
     if (!fs.existsSync(join(sharedProjectDir, Const.DB_DIR))) {
-      mkdirSync(join(sharedProjectDir, Const.DB_DIR), {recursive: true})
+      fs.mkdirSync(join(sharedProjectDir, Const.DB_DIR), {recursive: true})
     }
 
     if (!fs.existsSync(join(sharedProjectDir, Const.DB_BACKUP_DIR))) {
-      mkdirSync(join(sharedProjectDir, Const.DB_BACKUP_DIR), {recursive: true})
+      fs.mkdirSync(join(sharedProjectDir, Const.DB_BACKUP_DIR), {recursive: true})
     }
 
-    this.files.move(project, Const.DB_FILE, join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))
+    await this.files.copy(project, Const.DB_FILE, join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))
     cli.action.stop()
 
     if (!fs.existsSync(join(sharedProjectDir, Const.DB_DIR))) {
       cli.action.start('checkout codebase')
       const gitRepo = await this.projectConfig.get(ProjectConfig.GIT_REPO)
-      this.shell.sh(`git clone ${gitRepo} $WORKSPACE_DIR/$PROJECT_NAME`)
+      await this.shell.sh(`git clone ${gitRepo} $WORKSPACE_DIR/$PROJECT_NAME`)
       cli.action.stop()
     }
 

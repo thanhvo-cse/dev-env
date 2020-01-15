@@ -44,6 +44,7 @@ export default abstract class extends Command {
         this.flags = flags
 
         await this.env.set(Env.WORKSPACE_DIR, await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
+        await this.env.set(Env.DOCKER_SOURCE_DIR, join(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR), Const.DATA_PROJECT_DIR))
 
         const network = await this.customConfig.get(CustomConfig.NETWORK)
         if (network) {

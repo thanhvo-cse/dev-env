@@ -10,7 +10,7 @@ export default class CustomConfig {
   static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
   static readonly NETWORK: string = 'NETWORK'
   static readonly GDRIVE_PROJECT_ID: string = 'GDRIVE_PROJECT_ID'
-  static readonly ADMIN_DIR: string = 'ADMIN_DIR'
+  static readonly DOCKER_SOURCE_DIR: string = 'DOCKER_SOURCE_DIR'
 
   private env: Env = new Env()
 
@@ -27,7 +27,12 @@ export default class CustomConfig {
 
   private async initialize() {
     if (!this.configs) {
-      this.configPath = path.join(await this.env.get(Env.CONFIG_CONFIG_DIR), this.FILENAME)
+      const configDir = await this.env.get(Env.CONFIG_CONFIG_DIR);
+      this.configPath = path.join(configDir, this.FILENAME)
+
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, {recursive: true})
+      }
 
       if (!fs.existsSync(this.configPath)) {
         fs.writeJsonSync(this.configPath, {})
