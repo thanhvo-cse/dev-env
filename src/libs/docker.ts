@@ -12,11 +12,20 @@ export default class Docker {
   }
 
   async down(project: string) {
-    await this.run(project, 'down')
+    if (project == 'all') {
+      await this.shell.sh('docker stop $(docker ps -q)')
+    } else {
+      await this.run(project, 'down -v')
+    }
   }
 
   async restart(project: string) {
     await this.run(project, 'restart -d')
+  }
+
+  async rebuild(project: string) {
+    await this.run(project, 'pull')
+    await this.runWithSystem(project, 'restart -d')
   }
 
   async dbRestore(project: string) {
