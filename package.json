@@ -16,6 +16,7 @@
     "etl": "^0.6.10",
     "googleapis": "^46.0.0",
     "readline-promise": "^1.0.4",
+    "replace": "^1.1.5",
     "tslib": "^1.10.0",
     "zip-a-folder": "0.0.10"
   },

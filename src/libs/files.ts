@@ -18,6 +18,7 @@ export default class Files {
 
     await this.gdrive.download(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), source, dest)
 
+    // TODO: should unzip by npm packages
     const zipFile = join(await this.env.get(Env.PROJECT_DIR), source)
     await this.shell.sh(`unzip -qo ${zipFile} -d ${dest}`)
   }
@@ -25,10 +26,5 @@ export default class Files {
   async upload(project: string) {
     const source = join(await this.env.get(Env.PROJECT_DIR), `${project}.zip`)
     await this.gdrive.upload(source, await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID), `${project}.zip`)
-  }
-
-  async copy(project: string, source: string, target: string) {
-    const sourceFile = join(join(await this.env.get(Env.PROJECT_DIR), project), source)
-    fs.createReadStream(sourceFile).pipe(fs.createWriteStream(target))
   }
 }

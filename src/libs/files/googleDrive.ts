@@ -61,15 +61,13 @@ export class GoogleDrive {
         ).then(res => {
             return new Promise((resolve, reject) => {
               let progress = 0;
-              let buf = [];
+              let buf = new Array();
               res.data
                 .on('data', d => {
                   buf.push(d)
                   progress += d.length;
                   if (process.stdout.isTTY) {
-                    process.stdout.clearLine()
-                    process.stdout.cursorTo(0)
-                    process.stdout.write(`Downloaded ${progress} bytes`)
+                    console.log(`Downloaded ${progress} bytes`)
                   }
                 })
                 .on('end', () => {
@@ -77,10 +75,10 @@ export class GoogleDrive {
                   const filePath = join(dest, '../', item.name)
                   fs.writeFileSync(filePath, buffer)
                   resolve()
-                  console.log('\nFinish streaming')
+                  console.log('Finish streaming')
                 })
                 .on('error', err => {
-                  console.error('Error downloading file.\n');
+                  console.error('Error downloading file.');
                   reject(err);
                 })
             })

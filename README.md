@@ -19,7 +19,7 @@ $ npm install -g dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-dev-env/0.0.0 darwin-x64 node-v12.14.1
+dev-env/0.0.0 darwin-x64 node-v12.14.0
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -32,16 +32,19 @@ USAGE
 * [`dev-env cleanup`](#dev-env-cleanup)
 * [`dev-env composer PROJECT`](#dev-env-composer-project)
 * [`dev-env configure [COMMAND] [VALUE]`](#dev-env-configure-command-value)
+* [`dev-env create PROJECT TEMPLATE`](#dev-env-create-project-template)
 * [`dev-env down PROJECT`](#dev-env-down-project)
 * [`dev-env export PROJECT`](#dev-env-export-project)
 * [`dev-env grunt PROJECT`](#dev-env-grunt-project)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
 * [`dev-env import PROJECT`](#dev-env-import-project)
+* [`dev-env ls`](#dev-env-ls)
 * [`dev-env magento PROJECT`](#dev-env-magento-project)
 * [`dev-env magerun PROJECT`](#dev-env-magerun-project)
 * [`dev-env mysql PROJECT COMMAND [FILE]`](#dev-env-mysql-project-command-file)
 * [`dev-env npm PROJECT`](#dev-env-npm-project)
 * [`dev-env php PROJECT`](#dev-env-php-project)
+* [`dev-env remove PROJECT`](#dev-env-remove-project)
 * [`dev-env restart PROJECT`](#dev-env-restart-project)
 * [`dev-env up PROJECT`](#dev-env-up-project)
 
@@ -113,6 +116,25 @@ OPTIONS
 ```
 
 _See code: [src/commands/configure.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/configure.ts)_
+
+## `dev-env create PROJECT TEMPLATE`
+
+Create project
+
+```
+USAGE
+  $ dev-env create PROJECT TEMPLATE
+
+ARGUMENTS
+  PROJECT   project name
+  TEMPLATE  project template
+
+OPTIONS
+  -h, --help   show CLI help
+  -l, --local  locally
+```
+
+_See code: [src/commands/create.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/create.ts)_
 
 ## `dev-env down PROJECT`
 
@@ -198,6 +220,20 @@ OPTIONS
 ```
 
 _See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/import.ts)_
+
+## `dev-env ls`
+
+List imported projects
+
+```
+USAGE
+  $ dev-env ls
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/ls.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/ls.ts)_
 
 ## `dev-env magento PROJECT`
 
@@ -288,6 +324,24 @@ OPTIONS
 ```
 
 _See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/php.ts)_
+
+## `dev-env remove PROJECT`
+
+Remove project
+
+```
+USAGE
+  $ dev-env remove PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help   show CLI help
+  -l, --local  locally
+```
+
+_See code: [src/commands/remove.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/remove.ts)_
 
 ## `dev-env restart PROJECT`
 

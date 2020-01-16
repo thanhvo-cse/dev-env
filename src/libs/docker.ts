@@ -32,6 +32,10 @@ export default class Docker {
     await this.exec(project, 'db', `mysql -u root -p123456 < /home/database.sql`)
   }
 
+  async dbCreate(project: string) {
+    await this.exec(project, 'db', `mysql -u root -p123456 -e 'create database ${project}'`)
+  }
+
   async dbBackup(project: string) {
     await this.exec(
       project,

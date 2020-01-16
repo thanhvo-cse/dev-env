@@ -1,5 +1,5 @@
 import cli from 'cli-ux'
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import {join} from 'path'
 import Command from '../base'
 import Const from './../const'
@@ -44,6 +44,7 @@ export default class Import extends Command {
     cli.action.start('download files')
     await this.files.download('system')
     await this.files.download(project)
+    const projectDir = await this.env.get(Env.PROJECT_DIR)
     const sharedDir = await this.env.get(Env.SHARED_DIR)
     const sharedProjectDir = join(sharedDir, project)
 
@@ -55,14 +56,23 @@ export default class Import extends Command {
       fs.mkdirSync(join(sharedProjectDir, Const.DB_BACKUP_DIR), {recursive: true})
     }
 
-    await this.files.copy(project, Const.DB_FILE, join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))
+    if (fs.existsSync(join(projectDir, project, Const.DB_FILE))) {
+      await fs.copy(
+        join(projectDir, project, Const.DB_FILE),
+        join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE)
+      )
+    }
     cli.action.stop()
 
     const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
     if (!fs.existsSync(projectWorkspace)) {
       cli.action.start('checkout codebase')
       const gitRepo = await this.projectConfig.get(ProjectConfig.GIT_REPO)
-      await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+      if (gitRepo != '') {
+        await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+      } else {
+        fs.mkdirSync(projectWorkspace, {recursive: true})
+      }
       cli.action.stop()
     }
 
@@ -70,10 +80,18 @@ export default class Import extends Command {
     await this.docker.up(project)
     cli.action.stop()
 
-    cli.action.start('import database')
-    await this.docker.dbRestore(project)
-    cli.action.stop()
 
-    this.log('URL: ', await this.projectConfig.get(ProjectConfig.ACCESS_URL))
+    this.log('wait for docker')
+    await setTimeout(async () => {
+      cli.action.start('import database')
+      if (fs.existsSync(join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))) {
+        await this.docker.dbRestore(project)
+      } else {
+        await this.docker.dbCreate(project)
+      }
+      cli.action.stop()
+
+      this.log('URL: ', await this.projectConfig.get(ProjectConfig.ACCESS_URL))
+    }, 5000)
   }
 }
