@@ -15,6 +15,6 @@ export default class DockerSource extends Docker {
   }
 
   protected async getDockerDir() {
-    return await this.env.get(Env.DOCKER_SOURCE_DIR)
+    return await this.env.get(Env.DOCKER_SOURCE_UPSTREAM_DIR)
   }
 }

@@ -29,31 +29,31 @@ export default class Export extends Command {
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const dockerSourceDir = await this.env.get(Env.DOCKER_SOURCE_DIR)
-    const projectDir = await this.env.get(Env.PROJECT_DIR)
+    const dockerSourceUpstreamDir = await this.env.get(Env.DOCKER_SOURCE_UPSTREAM_DIR)
+    const dataUpstreamDir = await this.env.get(Env.DATA_UPSTREAM_DIR)
 
     cli.action.start('push docker images')
     await this.dockerSource.push(project)
     cli.action.stop()
 
     cli.action.start('copy files')
-    if (fs.existsSync(join(dockerSourceDir, 'system'))) {
-      await fs.removeSync(join(projectDir, 'system'))
-      await fs.copy(join(dockerSourceDir, 'system'), join(projectDir, 'system'))
-      await this.updateDockerComposeFile(join(projectDir, 'system', 'docker-compose.yml'))
+    if (fs.existsSync(join(dockerSourceUpstreamDir, 'system'))) {
+      await fs.removeSync(join(dataUpstreamDir, 'system'))
+      await fs.copy(join(dockerSourceUpstreamDir, 'system'), join(dataUpstreamDir, 'system'))
+      await this.updateDockerComposeFile(join(dataUpstreamDir, 'system', 'docker-compose.yml'))
     }
 
-    if (fs.existsSync(join(dockerSourceDir, project))) {
-      await fs.removeSync(join(projectDir, project))
-      await fs.copy(join(dockerSourceDir, project), join(projectDir, project))
-      await this.updateDockerComposeFile(join(projectDir, project, 'docker-compose.yml'))
+    if (fs.existsSync(join(dockerSourceUpstreamDir, project))) {
+      await fs.removeSync(join(dataUpstreamDir, project))
+      await fs.copy(join(dockerSourceUpstreamDir, project), join(dataUpstreamDir, project))
+      await this.updateDockerComposeFile(join(dataUpstreamDir, project, 'docker-compose.yml'))
     }
 
     cli.action.stop()
 
     cli.action.start('zip files')
-    await zip(join(projectDir, 'system'), join(projectDir, `system.zip`))
-    await zip(join(projectDir, project), join(projectDir, `${project}.zip`))
+    await zip(join(dataUpstreamDir, 'system'), join(dataUpstreamDir, `system.zip`))
+    await zip(join(dataUpstreamDir, project), join(dataUpstreamDir, `${project}.zip`))
     cli.action.stop()
 
     cli.action.start('upload files')

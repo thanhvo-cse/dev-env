@@ -27,6 +27,8 @@ export default class Import extends Command {
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
+    const dataUpstreamDir = await this.env.get(Env.DATA_UPSTREAM_DIR)
+    const dataUpstreamProjectDir = join(dataUpstreamDir, project)
 
     await this.shell.sh(`
       if ! grep -q local-adminer.legato.co "/etc/hosts"; then
@@ -44,22 +46,19 @@ export default class Import extends Command {
     cli.action.start('download files')
     await this.files.download('system')
     await this.files.download(project)
-    const projectDir = await this.env.get(Env.PROJECT_DIR)
-    const sharedDir = await this.env.get(Env.SHARED_DIR)
-    const sharedProjectDir = join(sharedDir, project)
 
-    if (!fs.existsSync(join(sharedProjectDir, Const.DB_DIR))) {
-      fs.mkdirSync(join(sharedProjectDir, Const.DB_DIR), {recursive: true})
+    if (!fs.existsSync(join(dataUpstreamProjectDir, Const.DB_DIR))) {
+      fs.mkdirSync(join(dataUpstreamProjectDir, Const.DB_DIR), {recursive: true})
     }
 
-    if (!fs.existsSync(join(sharedProjectDir, Const.DB_BACKUP_DIR))) {
-      fs.mkdirSync(join(sharedProjectDir, Const.DB_BACKUP_DIR), {recursive: true})
+    if (!fs.existsSync(join(dataUpstreamProjectDir, Const.DB_BACKUP_DIR))) {
+      fs.mkdirSync(join(dataUpstreamProjectDir, Const.DB_BACKUP_DIR), {recursive: true})
     }
 
-    if (fs.existsSync(join(projectDir, project, Const.DB_FILE))) {
+    if (fs.existsSync(join(dataUpstreamProjectDir, project, Const.DB_FILE))) {
       await fs.copy(
-        join(projectDir, project, Const.DB_FILE),
-        join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE)
+        join(dataUpstreamProjectDir, project, Const.DB_FILE),
+        join(dataUpstreamProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE)
       )
     }
     cli.action.stop()
@@ -84,7 +83,7 @@ export default class Import extends Command {
     this.log('wait for docker')
     await setTimeout(async () => {
       cli.action.start('import database')
-      if (fs.existsSync(join(sharedProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))) {
+      if (fs.existsSync(join(dataUpstreamProjectDir, Const.DB_BACKUP_DIR, Const.DB_FILE))) {
         await this.docker.dbRestore(project)
       } else {
         await this.docker.dbCreate(project)

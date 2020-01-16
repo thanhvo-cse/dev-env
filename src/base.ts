@@ -20,10 +20,6 @@ export default abstract class extends Command {
   protected args: any
   protected flags: any
 
-  static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
-  static readonly NETWORK: string = 'NETWORK'
-  static readonly PROJECT_NAME: string = 'PROJECT_NAME'
-
   static flags = {
     help: flags.help({char: 'h'})
   }
@@ -34,8 +30,14 @@ export default abstract class extends Command {
     this.env.set(Env.CONFIG_ROOT, config.root)
     this.env.set(Env.CONFIG_DATA_DIR, config.dataDir)
     this.env.set(Env.CONFIG_CONFIG_DIR, config.configDir)
-    this.env.set(Env.SHARED_DIR, join(config.dataDir, Const.DATA_SHARED_DIR))
-    this.env.set(Env.PROJECT_DIR, join(config.dataDir, Const.DATA_PROJECT_DIR))
+
+    this.env.set(Env.DATA_UPSTREAM_PROJECT_DIR, join(config.configDir, Const.UPSTREAM_PROJECTS_DIR))
+    this.env.set(Env.DATA_UPSTREAM_DB_DIR, join(config.configDir, Const.UPSTREAM_DB_DIR))
+    this.env.set(Env.DATA_UPSTREAM_DB_BACKUP_DIR, join(config.configDir, Const.UPSTREAM_DB_BACKUP_DIR))
+
+    this.env.set(Env.DATA_LOCAL_PROJECT_DIR, join(config.configDir, Const.LOCAL_PROJECTS_DIR))
+    this.env.set(Env.DATA_LOCAL_DB_DIR, join(config.configDir, Const.LOCAL_DB_DIR))
+    this.env.set(Env.DATA_LOCAL_DB_BACKUP_DIR, join(config.configDir, Const.LOCAL_DB_BACKUP_DIR))
   }
 
   async init() {
@@ -44,7 +46,7 @@ export default abstract class extends Command {
     this.flags = flags
 
     await this.env.set(Env.WORKSPACE_DIR, await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
-    await this.env.set(Env.DOCKER_SOURCE_DIR, join(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR), Const.DATA_PROJECT_DIR))
+    await this.env.set(Env.SOURCE_UPSTREAM_PROJECT_DIR, join(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR), Const.SOURCE_PROJECTS_DIR))
 
     const network = await this.customConfig.get(CustomConfig.NETWORK)
     if (network) {

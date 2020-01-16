@@ -78,6 +78,6 @@ export default class Docker {
   }
 
   protected async getDockerDir() {
-    return await this.env.get(Env.PROJECT_DIR)
+    return await this.env.get(Env.DATA_UPSTREAM_DIR)
   }
 }
