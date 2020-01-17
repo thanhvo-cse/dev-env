@@ -1,12 +1,9 @@
-import cli from 'cli-ux'
-import {flags} from '@oclif/command'
 import Command from '../base'
 import Const from './../const'
-import DockerLib from './../libs/docker'
-import CustomConfig from "../libs/customConfig";
-import * as fs from "fs-extra";
-import {join} from "path";
-import Env from "../libs/env";
+import * as fs from "fs-extra"
+import {join} from "path"
+import Env from "../libs/env"
+import DockerUpstream from "../services/dockerUpstream"
 
 export default class Mysql extends Command {
   static description = 'Mysql'
@@ -40,22 +37,22 @@ export default class Mysql extends Command {
     ...Command.flags
   }
 
-  private docker: DockerLib = new DockerLib()
+  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const sharedDir = await this.env.get(Env.SHARED_DIR)
+    const sharedDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
     const sharedProjectDir = join(sharedDir, project)
 
     if (this.args.command == 'backup') {
       await this.docker.dbBackup(project)
 
       if (this.args.file != undefined) {
-        await fs.copy(join(sharedProjectDir, Const.DB_BACKUP_DIR, 'database.sql'), this.args.file)
+        await fs.copy(join(sharedProjectDir, Const.ARG_PROJECT, 'database.sql'), this.args.file)
       }
     } else if (this.args.command == 'restore') {
       if (this.args.file != undefined) {
-        await fs.copy(this.args.file, join(sharedProjectDir, Const.DB_BACKUP_DIR, 'database.sql'))
+        await fs.copy(this.args.file, join(sharedProjectDir, Const.ARG_PROJECT, 'database.sql'))
       }
 
       await this.docker.dbRestore(project)

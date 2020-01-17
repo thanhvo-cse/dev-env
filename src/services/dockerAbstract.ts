@@ -1,8 +1,8 @@
-import Shell from './shell'
-import Env from './Env'
-import CustomConfig from "./customConfig";
+import Shell from './../libs/shell'
+import Env from './../libs/Env'
+import CustomConfig from "./../libs/customConfig";
 
-export default class Docker {
+export default abstract class DockerAbstract {
   protected shell: Shell = new Shell()
   protected env: Env = new Env()
   protected customConfig: CustomConfig = new CustomConfig()
@@ -77,7 +77,5 @@ export default class Docker {
     let {stdout} = await this.shell.sh(`docker exec -i ${container}_${project} bash -c "${cmd}"`)
   }
 
-  protected async getDockerDir() {
-    return await this.env.get(Env.DATA_UPSTREAM_DIR)
-  }
+  protected async abstract getDockerDir()
 }

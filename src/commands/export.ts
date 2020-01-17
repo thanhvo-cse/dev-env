@@ -1,12 +1,13 @@
 import Command from '../base'
 import Const from './../const'
-import Docker from './../libs/docker'
-import {zip} from 'zip-a-folder'
+import {flags} from '@oclif/command'
 import Env from "../libs/env";
 import {join} from 'path'
 import * as fs from 'fs-extra'
 import cli from "cli-ux";
-import DockerSource from "../libs/dockerSource";
+import DockerSource from "../services/dockerSource"
+import FileProjects from "../services/fileProjects"
+import FileDb from "../services/fileDb"
 
 export default class Export extends Command {
   static description = 'Export project'
@@ -21,45 +22,51 @@ export default class Export extends Command {
   ]
 
   static flags = {
-    ...Command.flags
+    ...Command.flags,
+    database: flags.boolean({
+      char: 'd',
+      description: 'database'
+    })
   }
 
-  private docker: Docker = new Docker()
-  private dockerSource: DockerSource = new DockerSource()
+  private docker: DockerSource = new DockerSource()
+  private fileProjects: FileProjects = new FileProjects()
+  private fileDb: FileDb = new FileDb()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const dockerSourceUpstreamDir = await this.env.get(Env.DOCKER_SOURCE_UPSTREAM_DIR)
-    const dataUpstreamDir = await this.env.get(Env.DATA_UPSTREAM_DIR)
+    const sourceUpstreamProjectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
+    const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
 
     cli.action.start('push docker images')
-    await this.dockerSource.push(project)
+    // await this.docker.push(project)
     cli.action.stop()
 
     cli.action.start('copy files')
-    if (fs.existsSync(join(dockerSourceUpstreamDir, 'system'))) {
-      await fs.removeSync(join(dataUpstreamDir, 'system'))
-      await fs.copy(join(dockerSourceUpstreamDir, 'system'), join(dataUpstreamDir, 'system'))
-      await this.updateDockerComposeFile(join(dataUpstreamDir, 'system', 'docker-compose.yml'))
+    if (fs.existsSync(join(sourceUpstreamProjectDir, 'system'))) {
+      await fs.removeSync(join(dataUpstreamProjectDir, 'system'))
+      await fs.copy(join(sourceUpstreamProjectDir, 'system'), join(dataUpstreamProjectDir, 'system'))
+      await this.updateDockerComposeFile(join(dataUpstreamProjectDir, 'system', 'docker-compose.yml'))
     }
 
-    if (fs.existsSync(join(dockerSourceUpstreamDir, project))) {
-      await fs.removeSync(join(dataUpstreamDir, project))
-      await fs.copy(join(dockerSourceUpstreamDir, project), join(dataUpstreamDir, project))
-      await this.updateDockerComposeFile(join(dataUpstreamDir, project, 'docker-compose.yml'))
+    if (fs.existsSync(join(sourceUpstreamProjectDir, project))) {
+      await fs.removeSync(join(dataUpstreamProjectDir, project))
+      await fs.copy(join(sourceUpstreamProjectDir, project), join(dataUpstreamProjectDir, project))
+      await this.updateDockerComposeFile(join(dataUpstreamProjectDir, project, 'docker-compose.yml'))
     }
-
     cli.action.stop()
 
-    cli.action.start('zip files')
-    await zip(join(dataUpstreamDir, 'system'), join(dataUpstreamDir, `system.zip`))
-    await zip(join(dataUpstreamDir, project), join(dataUpstreamDir, `${project}.zip`))
+    cli.action.start('upload project files')
+    await this.fileProjects.upload('system')
+    await this.fileProjects.upload(project)
     cli.action.stop()
 
-    cli.action.start('upload files')
-    await this.files.upload('system')
-    await this.files.upload(project)
-    cli.action.stop()
+    if (this.flags.database) {
+      cli.action.start('upload db files')
+      await this.docker.dbBackup(project)
+      await this.fileDb.upload(project)
+      cli.action.stop()
+    }
   }
 
   private async updateDockerComposeFile(file: string) {

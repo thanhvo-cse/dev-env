@@ -14,7 +14,6 @@ export default abstract class extends Command {
   protected appConfig: AppConfig = new AppConfig()
   protected customConfig: CustomConfig = new CustomConfig()
   protected projectConfig: ProjectConfig = new ProjectConfig()
-  protected files: Files = new Files()
   protected shell: Shell = new Shell()
 
   protected args: any

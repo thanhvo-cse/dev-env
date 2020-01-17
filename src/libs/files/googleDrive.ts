@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import {join} from 'path'
 import readline from 'readline-promise'
 import {google} from 'googleapis'
+import CustomConfig from "../customConfig";
 
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
@@ -9,6 +10,7 @@ export class GoogleDrive {
     'https://www.googleapis.com/auth/drive',
   ]
 
+  private customConfig: CustomConfig = new CustomConfig()
   private oAuth2Client: any
   private drive: any
 
@@ -25,8 +27,10 @@ export class GoogleDrive {
     this.drive = google.drive({version: 'v3', auth: this.oAuth2Client})
   }
 
-  async upload(filePath: string, root: string, fileName: string) {
-    this.remove(root, fileName)
+  async upload(folder: string, fileName: string, source: string) {
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
+    const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    this.remove(dir.id, fileName)
     try {
       const res = await this.drive.files.create({
         resource: {
@@ -35,7 +39,7 @@ export class GoogleDrive {
         },
         media: {
           mimeType: 'application/zip',
-          body: fs.createReadStream(filePath)
+          body: fs.createReadStream(source)
         },
         fields: 'id'
       })
@@ -46,8 +50,10 @@ export class GoogleDrive {
     }
   }
 
-  async download(root: string, fileName: string, dest: string) {
-    const file = await this.find(`parents in '${root}' and name='${fileName}'`)
+  async download(folder: string, fileName: string, dest: string) {
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
+    const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    const file = await this.find(`parents in '${dir.id}' and name='${fileName}'`)
 
     if (file[0]) {
       const item = file[0]
@@ -72,7 +78,7 @@ export class GoogleDrive {
                 })
                 .on('end', () => {
                   const buffer = Buffer.concat(buf)
-                  const filePath = join(dest, '../', item.name)
+                  const filePath = join(dest, item.name)
                   fs.writeFileSync(filePath, buffer)
                   resolve()
                   console.log('Finish streaming')

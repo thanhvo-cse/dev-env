@@ -1,9 +1,6 @@
-import cli from 'cli-ux'
-import {flags} from '@oclif/command'
 import Command from '../base'
 import Const from './../const'
-import DockerLib from './../libs/docker'
-import CustomConfig from "../libs/customConfig";
+import DockerUpstream from "../services/dockerUpstream"
 
 export default class Grunt extends Command {
   static description = 'Grunt'
@@ -23,7 +20,7 @@ export default class Grunt extends Command {
     ...Command.flags
   }
 
-  private docker: DockerLib = new DockerLib()
+  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]

@@ -1,7 +1,6 @@
-import cli from 'cli-ux'
 import Command from '../base'
 import Const from './../const'
-import DockerLib from './../libs/docker'
+import DockerUpstream from "../services/dockerUpstream"
 
 export default class Composer extends Command {
   static description = 'Composer'
@@ -21,7 +20,7 @@ export default class Composer extends Command {
     ...Command.flags
   }
 
-  private docker: DockerLib = new DockerLib()
+  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]

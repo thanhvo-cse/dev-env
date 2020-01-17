@@ -1,7 +1,7 @@
-import Env from './Env'
-import Docker from './docker'
+import Env from './../libs/Env'
+import DockerAbstract from './dockerAbstract'
 
-export default class DockerSource extends Docker {
+export default class DockerSource extends DockerAbstract {
   async up(project: string) {
     await this.runWithSystem(project, 'up -d --build')
   }
@@ -15,6 +15,6 @@ export default class DockerSource extends Docker {
   }
 
   protected async getDockerDir() {
-    return await this.env.get(Env.DOCKER_SOURCE_UPSTREAM_DIR)
+    return await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
   }
 }

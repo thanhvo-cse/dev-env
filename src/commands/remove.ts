@@ -3,10 +3,9 @@ import * as fs from 'fs-extra'
 import {join} from 'path'
 import Command from '../base'
 import Const from './../const'
-import Docker from './../libs/docker'
 import Env from "./../libs/env"
-import replace from 'replace'
-import {flags} from "@oclif/command";
+import {flags} from "@oclif/command"
+import DockerUpstream from "../services/dockerUpstream"
 
 export default class Remove extends Command {
   static description = 'Remove project'
@@ -28,13 +27,13 @@ export default class Remove extends Command {
     })
   }
 
-  private docker: Docker = new Docker()
+  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const dockerSourceDir = await this.env.get(Env.DOCKER_SOURCE_DIR)
-    const projectDir = await this.env.get(Env.PROJECT_DIR)
-    const sharedDir = await this.env.get(Env.SHARED_DIR)
+    const dockerSourceDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
+    const projectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
+    const sharedDir = await this.env.get(Env.DATA_UPSTREAM_DB_BACKUP_DIR)
     const sharedProjectDir = join(sharedDir, project)
 
     if (await cli.prompt(`Are you sure to remove project '${project}'? (y/n)`) == 'y') {
