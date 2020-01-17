@@ -32,10 +32,6 @@ export default abstract class DockerAbstract {
     await this.exec(project, 'db', `mysql -u root -p123456 < /home/database.sql`)
   }
 
-  async dbCreate(project: string) {
-    await this.exec(project, 'db', `mysql -u root -p123456 -e 'create database ${project}'`)
-  }
-
   async dbBackup(project: string) {
     await this.exec(
       project,
@@ -62,14 +58,15 @@ export default abstract class DockerAbstract {
   }
 
   protected async run(project: string, cmd: string) {
-    const dockerDir = await this.getDockerDir()
-    await this.shell.sh(`docker-compose -f ${dockerDir}/${project}/docker-compose.yml ${cmd}`)
+    const projectCompose = await this.getProjectCompose(project)
+    await this.shell.sh(`docker-compose -f ${projectCompose} ${cmd}`)
   }
 
   protected async runWithSystem(project: string, cmd: string) {
-    const dockerDir = await this.getDockerDir()
+    const systemCompose = await this.getSystemCompose()
+    const projectCompose = await this.getProjectCompose(project)
     let {stdout} = await this.shell.sh(`
-      docker-compose -f ${dockerDir}/system/docker-compose.yml -f ${dockerDir}/${project}/docker-compose.yml ${cmd}
+      docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}
     `)
   }
 
@@ -77,5 +74,7 @@ export default abstract class DockerAbstract {
     let {stdout} = await this.shell.sh(`docker exec -i ${container}_${project} bash -c "${cmd}"`)
   }
 
-  protected async abstract getDockerDir()
+  protected async abstract getProjectCompose(project: string)
+
+  protected async abstract getSystemCompose()
 }

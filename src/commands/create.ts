@@ -6,6 +6,7 @@ import {flags} from "@oclif/command"
 import DockerUpstream from "../services/dockerUpstream"
 import ProjectTemplate from '../services/projectTemplate'
 import FileTransport from '../services/fileTransport'
+import Hosts from '../services/hosts'
 
 export default class Create extends Command {
   static description = 'Create project'
@@ -36,12 +37,14 @@ export default class Create extends Command {
   private docker: DockerUpstream = new DockerUpstream()
   private projectTemplate: ProjectTemplate = new ProjectTemplate()
   private fileTransport: FileTransport = new FileTransport()
+  private hosts: Hosts = new Hosts()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
     const template = this.args.template
 
     cli.action.start('create files')
+    await this.hosts.addHost(project, true)
     if (this.flags.local) {
       await this.projectTemplate.createLocalProject(template, project)
       await this.fileTransport.initLocalDir(project)

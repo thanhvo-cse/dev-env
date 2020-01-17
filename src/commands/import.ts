@@ -63,22 +63,8 @@ export default class Import extends Command {
       cli.action.stop()
     }
 
-    cli.action.start('docker up')
-    await this.docker.up(project)
-    cli.action.stop()
-
-
-    this.log('wait for docker')
-    await setTimeout(async () => {
-      cli.action.start('import database')
-      if (fs.existsSync(join(dataUpstreamDbBackupDir, Const.DB_FILE))) {
-        await this.docker.dbRestore(project)
-      } else {
-        await this.docker.dbCreate(project)
-      }
-      cli.action.stop()
-
-      this.log('URL: ', await this.projectConfig.get(ProjectConfig.ACCESS_URL))
-    }, 5000)
+    if (fs.existsSync(join(dataUpstreamDbBackupDir, project, Const.DB_FILE))) {
+      this.warn('downloaded db backup data')
+    }
   }
 }

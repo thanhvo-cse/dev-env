@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import {join} from 'path'
 import {GoogleDrive} from './../libs/files/googleDrive'
 import Env from './../libs/env'
@@ -24,6 +24,7 @@ export default abstract class FileAbstract {
     if (fs.existsSync(zipFile)) {
       const destDir = join(sourcePath, project)
       await this.shell.sh(`unzip -qo ${zipFile} -d ${destDir}`)
+      await fs.removeSync(zipFile)
     }
   }
 
@@ -32,6 +33,7 @@ export default abstract class FileAbstract {
     await zip(join(sourcePath, project), join(sourcePath, `${project}.zip`))
     const source = join(sourcePath, `${project}.zip`)
     await this.gdrive.upload(this.sourceFolder, `${project}.zip`, source)
+    await fs.removeSync(source)
   }
 
   protected async abstract getSourcePath()

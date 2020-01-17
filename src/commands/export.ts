@@ -1,9 +1,6 @@
 import Command from '../base'
 import Const from './../const'
 import {flags} from '@oclif/command'
-import Env from "../libs/env";
-import {join} from 'path'
-import * as fs from 'fs-extra'
 import cli from "cli-ux";
 import DockerSource from "../services/dockerSource"
 import FileProjects from "../services/fileProjects"
@@ -37,13 +34,11 @@ export default class Export extends Command {
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const sourceUpstreamProjectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
-    const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
 
-    this.fileTransport.initUpstreamDir(project)
+    await this.fileTransport.initUpstreamDir(project)
 
     cli.action.start('push docker images')
-    // await this.docker.push(project)
+    await this.docker.push(project)
     cli.action.stop()
 
     cli.action.start('copy files')

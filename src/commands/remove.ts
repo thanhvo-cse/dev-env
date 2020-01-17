@@ -5,6 +5,7 @@ import Env from "./../libs/env"
 import {flags} from "@oclif/command"
 import ProjectTemplate from '../services/projectTemplate'
 import FileTransport from '../services/fileTransport'
+import * as fs from 'fs-extra'
 
 export default class Remove extends Command {
   static description = 'Remove project'
@@ -13,7 +14,7 @@ export default class Remove extends Command {
     {
       name: Const.ARG_PROJECT,
       required: true,
-      description: 'project name',
+      description: 'project name | all',
       hidden: false
     }
   ]
@@ -35,11 +36,23 @@ export default class Remove extends Command {
       cli.action.start('remove files')
 
       if (this.flags.local) {
-        await this.projectTemplate.removeLocalProject(project)
-        await this.fileTransport.removeLocalDir(project)
+        if (project == 'all') {
+          await fs.removeSync(await this.env.get(Env.DATA_LOCAL_PROJECT_DIR))
+          await fs.removeSync(await this.env.get(Env.DATA_LOCAL_DB_DIR))
+          await fs.removeSync(await this.env.get(Env.DATA_LOCAL_DB_BACKUP_DIR))
+        } else {
+          await this.projectTemplate.removeLocalProject(project)
+          await this.fileTransport.removeLocalDir(project)
+        }
       } else {
-        await this.projectTemplate.removeUpstreamProject(project)
-        await this.fileTransport.removeUpstreamDir(project)
+        if (project == 'all') {
+          await fs.removeSync(await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR))
+          await fs.removeSync(await this.env.get(Env.DATA_UPSTREAM_DB_DIR))
+          await fs.removeSync(await this.env.get(Env.DATA_UPSTREAM_DB_BACKUP_DIR))
+        } else {
+          await this.projectTemplate.removeUpstreamProject(project)
+          await this.fileTransport.removeUpstreamDir(project)
+        }
       }
 
       cli.action.stop()
