@@ -8,6 +8,7 @@ import cli from "cli-ux";
 import DockerSource from "../services/dockerSource"
 import FileProjects from "../services/fileProjects"
 import FileDb from "../services/fileDb"
+import FileTransport from './../services/fileTransport'
 
 export default class Export extends Command {
   static description = 'Export project'
@@ -32,28 +33,22 @@ export default class Export extends Command {
   private docker: DockerSource = new DockerSource()
   private fileProjects: FileProjects = new FileProjects()
   private fileDb: FileDb = new FileDb()
+  private fileTransport: FileTransport = new FileTransport()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
     const sourceUpstreamProjectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
     const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
 
+    this.fileTransport.initUpstreamDir(project)
+
     cli.action.start('push docker images')
     // await this.docker.push(project)
     cli.action.stop()
 
     cli.action.start('copy files')
-    if (fs.existsSync(join(sourceUpstreamProjectDir, 'system'))) {
-      await fs.removeSync(join(dataUpstreamProjectDir, 'system'))
-      await fs.copy(join(sourceUpstreamProjectDir, 'system'), join(dataUpstreamProjectDir, 'system'))
-      await this.updateDockerComposeFile(join(dataUpstreamProjectDir, 'system', 'docker-compose.yml'))
-    }
-
-    if (fs.existsSync(join(sourceUpstreamProjectDir, project))) {
-      await fs.removeSync(join(dataUpstreamProjectDir, project))
-      await fs.copy(join(sourceUpstreamProjectDir, project), join(dataUpstreamProjectDir, project))
-      await this.updateDockerComposeFile(join(dataUpstreamProjectDir, project, 'docker-compose.yml'))
-    }
+    await this.fileTransport.copySourceToUpstream('system')
+    await this.fileTransport.copySourceToUpstream(project)
     cli.action.stop()
 
     cli.action.start('upload project files')
@@ -63,25 +58,13 @@ export default class Export extends Command {
 
     if (this.flags.database) {
       cli.action.start('upload db files')
-      await this.docker.dbBackup(project)
-      await this.fileDb.upload(project)
-      cli.action.stop()
+      await this.docker.up(project)
+
+      await setTimeout(async () => {
+        await this.docker.dbBackup(project)
+        await this.fileDb.upload(project)
+        cli.action.stop()
+      }, 5000)
     }
-  }
-
-  private async updateDockerComposeFile(file: string) {
-    const data = fs.readFileSync(file, 'utf-8')
-    let dataArray = data.split('\n');
-    let newDataArray = dataArray
-    const searchKeyword = 'build:';
-
-    for (let index = 0; index < dataArray.length; index++) {
-      if (dataArray[index].includes(searchKeyword)) {
-        newDataArray.splice(index, 1);
-      }
-    }
-
-    const updatedData = newDataArray.join('\n');
-    fs.writeFileSync(file, updatedData)
   }
 }

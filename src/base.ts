@@ -30,13 +30,13 @@ export default abstract class extends Command {
     this.env.set(Env.CONFIG_DATA_DIR, config.dataDir)
     this.env.set(Env.CONFIG_CONFIG_DIR, config.configDir)
 
-    this.env.set(Env.DATA_UPSTREAM_PROJECT_DIR, join(config.configDir, Const.UPSTREAM_PROJECTS_DIR))
-    this.env.set(Env.DATA_UPSTREAM_DB_DIR, join(config.configDir, Const.UPSTREAM_DB_DIR))
-    this.env.set(Env.DATA_UPSTREAM_DB_BACKUP_DIR, join(config.configDir, Const.UPSTREAM_DB_BACKUP_DIR))
+    this.env.set(Env.DATA_UPSTREAM_PROJECT_DIR, join(config.dataDir, Const.UPSTREAM_PROJECTS_DIR))
+    this.env.set(Env.DATA_UPSTREAM_DB_DIR, join(config.dataDir, Const.UPSTREAM_DB_DIR))
+    this.env.set(Env.DATA_UPSTREAM_DB_BACKUP_DIR, join(config.dataDir, Const.UPSTREAM_DB_BACKUP_DIR))
 
-    this.env.set(Env.DATA_LOCAL_PROJECT_DIR, join(config.configDir, Const.LOCAL_PROJECTS_DIR))
-    this.env.set(Env.DATA_LOCAL_DB_DIR, join(config.configDir, Const.LOCAL_DB_DIR))
-    this.env.set(Env.DATA_LOCAL_DB_BACKUP_DIR, join(config.configDir, Const.LOCAL_DB_BACKUP_DIR))
+    this.env.set(Env.DATA_LOCAL_PROJECT_DIR, join(config.dataDir, Const.LOCAL_PROJECTS_DIR))
+    this.env.set(Env.DATA_LOCAL_DB_DIR, join(config.dataDir, Const.LOCAL_DB_DIR))
+    this.env.set(Env.DATA_LOCAL_DB_BACKUP_DIR, join(config.dataDir, Const.LOCAL_DB_BACKUP_DIR))
   }
 
   async init() {
@@ -45,11 +45,18 @@ export default abstract class extends Command {
     this.flags = flags
 
     await this.env.set(Env.WORKSPACE_DIR, await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
-    await this.env.set(Env.SOURCE_UPSTREAM_PROJECT_DIR, join(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR), Const.SOURCE_PROJECTS_DIR))
+    await this.env.set(
+      Env.SOURCE_UPSTREAM_PROJECT_DIR,
+      join(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR), Const.SOURCE_PROJECTS_DIR)
+    )
 
     const network = await this.customConfig.get(CustomConfig.NETWORK)
     if (network) {
-      let {stdout} = await this.shell.sh(`ipconfig getifaddr ${await this.customConfig.get(CustomConfig.NETWORK)}`, true)
+      let {stdout} = await this.shell.sh(
+        `ipconfig getifaddr ${await this.customConfig.get(CustomConfig.NETWORK)}`,
+        true
+      )
+
       await this.env.set(Env.REMOTE_HOST, stdout.trim())
     }
 

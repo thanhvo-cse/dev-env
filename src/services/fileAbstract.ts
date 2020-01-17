@@ -34,5 +34,5 @@ export default abstract class FileAbstract {
     await this.gdrive.upload(this.sourceFolder, `${project}.zip`, source)
   }
 
-  protected async abstract getSourcePath();
+  protected async abstract getSourcePath()
 }

@@ -35,7 +35,7 @@ export class GoogleDrive {
       const res = await this.drive.files.create({
         resource: {
           'name': fileName,
-          parents: [root]
+          parents: [dir.id]
         },
         media: {
           mimeType: 'application/zip',
@@ -124,8 +124,6 @@ export class GoogleDrive {
       const files = res.data.files
       if (files && files.length) {
         return files
-      } else {
-        console.log('No files found.')
       }
     } catch (e) {
       console.log('The API returned an error: ' + e.message)
