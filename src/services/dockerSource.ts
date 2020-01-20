@@ -5,15 +5,15 @@ import Const from './../const'
 
 export default class DockerSource extends DockerAbstract {
   async up(project: string) {
-    await this.runWithSystem(project, 'up -d --build')
+    await this.dockerCompose(project, 'up -d --build')
   }
 
   async restart(project: string) {
-    await this.run(project, 'restart -d -build')
+    await this.dockerCompose(project, 'restart -d -build')
   }
 
   async push(project: string) {
-    await this.runWithSystem(project, 'push')
+    await this.dockerCompose(project, 'push')
   }
 
   protected async getProjectCompose(project: string) {

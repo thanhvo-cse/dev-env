@@ -69,8 +69,9 @@ export default class ProjectTemplate {
   }
 
   async removeLocalProject(project: string) {
+    const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
     const dataLocalProjectDir = await this.env.get(Env.DATA_LOCAL_PROJECT_DIR)
-    const dataNginxDir = join(dataLocalProjectDir, 'system', 'local')
+    const dataNginxDir = join(dataUpstreamProjectDir, 'system', 'local')
 
     await this.removeSystem(dataNginxDir, project)
     await this.removeProject(dataLocalProjectDir, project)

@@ -2,7 +2,6 @@ import Command, {flags} from '@oclif/command'
 import * as Config from "@oclif/config"
 import Const from './const'
 import Env from "./libs/env"
-import AppConfig from "./libs/appConfigs"
 import CustomConfig from "./libs/customConfig"
 import ProjectConfig from "./libs/projectConfig"
 import Shell from './libs/shell'
@@ -14,9 +13,7 @@ import DockerUpstream from "./services/dockerUpstream"
 
 export default abstract class extends Command {
   protected env: Env = new Env()
-  protected appConfig: AppConfig = new AppConfig()
   protected customConfig: CustomConfig = new CustomConfig()
-  protected projectConfig: ProjectConfig = new ProjectConfig()
   protected shell: Shell = new Shell()
 
   protected args: any
@@ -80,5 +77,19 @@ export default abstract class extends Command {
     }
 
     return docker
+  }
+
+  protected async getProjectConfig(project: string): Promise<ProjectConfig> {
+    const config: ProjectConfig = new ProjectConfig()
+
+    if (this.flags.source) {
+      await config.initialize(await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR), project)
+    } else if (this.flags.local) {
+      await config.initialize(await this.env.get(Env.DATA_LOCAL_PROJECT_DIR), project)
+    } else {
+      await config.initialize(await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR), project)
+    }
+
+    return config
   }
 }

@@ -1,6 +1,8 @@
 import Shell from './../libs/shell'
 import Env from './../libs/Env'
-import CustomConfig from "./../libs/customConfig";
+import CustomConfig from "./../libs/customConfig"
+import yaml from 'js-yaml'
+import * as fs from 'fs'
 
 export default abstract class DockerAbstract {
   protected shell: Shell = new Shell()
@@ -8,24 +10,24 @@ export default abstract class DockerAbstract {
   protected customConfig: CustomConfig = new CustomConfig()
 
   async up(project: string) {
-    await this.runWithSystem(project, 'up -d')
+    await this.dockerCompose(project, 'up -d')
   }
 
   async down(project: string) {
     if (project == 'all') {
       await this.shell.sh('docker rm -f $(docker ps -aq)')
     } else {
-      await this.runWithSystem(project, 'down -v')
+      await this.docker(project, 'docker rm -f')
     }
   }
 
   async restart(project: string) {
-    await this.run(project, 'restart -d')
+    await this.dockerCompose(project, 'restart -d')
   }
 
   async rebuild(project: string) {
-    await this.run(project, 'pull')
-    await this.runWithSystem(project, 'restart -d')
+    await this.dockerCompose(project, 'pull')
+    await this.dockerCompose(project, 'restart -d')
   }
 
   async dbRestore(project: string) {
@@ -57,12 +59,21 @@ export default abstract class DockerAbstract {
     await this.exec(project, 'php', `cd /var/www/html/; ${cmd}`)
   }
 
-  protected async run(project: string, cmd: string) {
+  protected async docker(project: string, cmd: string) {
     const projectCompose = await this.getProjectCompose(project)
-    await this.shell.sh(`docker-compose -f ${projectCompose} ${cmd}`)
+
+    let containers = Array()
+    const doc = yaml.safeLoad(fs.readFileSync(projectCompose, 'utf8'))
+    for (const [key, value] of Object.entries(doc.services)) {
+      containers.push(key)
+    }
+
+    const containersJoined = containers.join(' ')
+
+    await this.shell.sh(`${cmd} ${containersJoined}`)
   }
 
-  protected async runWithSystem(project: string, cmd: string) {
+  protected async dockerCompose(project: string, cmd: string) {
     const systemCompose = await this.getSystemCompose()
     const projectCompose = await this.getProjectCompose(project)
     await this.shell.sh(`docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}`)

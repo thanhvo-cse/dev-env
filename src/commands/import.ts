@@ -51,9 +51,10 @@ export default class Import extends Command {
 
     const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
     if (!fs.existsSync(projectWorkspace)) {
-      cli.action.start('checkout codebase')
-      const gitRepo = await this.projectConfig.get(ProjectConfig.GIT_REPO)
+      const projectConfig = await this.getProjectConfig(project)
+      const gitRepo = await projectConfig.get(ProjectConfig.GIT_REPO)
       if (gitRepo != '') {
+        cli.action.start('checkout codebase')
         await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
       } else {
         fs.mkdirSync(projectWorkspace, {recursive: true})

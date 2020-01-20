@@ -14,15 +14,14 @@ export default class ProjectConfig {
   private env: Env = new Env()
 
   async get(key: string) {
-    await this.initialize()
     return this.configs[key] || ''
   }
 
-  private async initialize() {
+  async initialize(projectDir: string, projectName: string) {
     if (!this.configs) {
       this.configs = fs.readJsonSync(join(
-        await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR),
-        await this.env.get(Env.PROJECT_NAME),
+        projectDir,
+        projectName,
         Const.CONFIG_FILE
       ))
     }
