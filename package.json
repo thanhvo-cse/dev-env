@@ -1,7 +1,7 @@
 {
   "name": "@thanhvo-cse/dev-env",
   "description": "dev-env tool",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Thanh Vo",
   "bin": {
     "dev-env": "./bin/run"
