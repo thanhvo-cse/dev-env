@@ -21,7 +21,7 @@ export default class ProjectConfig {
   private async initialize() {
     if (!this.configs) {
       this.configs = fs.readJsonSync(join(
-        await this.env.get(Env.PROJECT_DIR),
+        await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR),
         await this.env.get(Env.PROJECT_NAME),
         Const.CONFIG_FILE
       ))

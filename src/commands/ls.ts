@@ -14,7 +14,7 @@ export default class Ls extends Command {
   }
 
   async run() {
-    const projectDir = await this.env.get(Env.PROJECT_DIR)
+    const projectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
     const dirents = fs.readdirSync(projectDir, { withFileTypes: true })
     const filesNames = dirents
       .filter(dirent => dirent.isDirectory() && dirent.name != 'system')

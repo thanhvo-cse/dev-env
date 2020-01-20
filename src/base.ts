@@ -6,8 +6,7 @@ import AppConfig from "./libs/appConfigs"
 import CustomConfig from "./libs/customConfig"
 import ProjectConfig from "./libs/projectConfig"
 import Shell from './libs/shell'
-import Files from "./libs/files";
-import {join} from "path";
+import {join} from "path"
 
 export default abstract class extends Command {
   protected env: Env = new Env()
