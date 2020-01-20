@@ -11,7 +11,7 @@ export default class ProjectTemplate {
 
   async createUpstreamProject(template: string, project: string) {
     const sourceUpstreamProjectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
-    const nginxDir = join(sourceUpstreamProjectDir, 'system', 'nginx', 'conf.d', 'upstream')
+    const nginxDir = join(sourceUpstreamProjectDir, 'system', 'upstream')
 
     const systemConf = await this.findSystemConf(nginxDir, project)
     if (systemConf !== undefined) {
@@ -34,7 +34,7 @@ export default class ProjectTemplate {
 
   async createLocalProject(template: string, project: string) {
     const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
-    const nginxDir = join(dataUpstreamProjectDir, 'system', 'nginx', 'conf.d', 'local')
+    const nginxDir = join(dataUpstreamProjectDir, 'system', 'local')
     const dataLocalProjectDir = await this.env.get(Env.DATA_LOCAL_PROJECT_DIR)
 
     const systemConf = await this.findSystemConf(nginxDir, project)
@@ -58,9 +58,9 @@ export default class ProjectTemplate {
 
   async removeUpstreamProject(project: string) {
     const sourceUpstreamProjectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
-    const sourceNginxDir = join(sourceUpstreamProjectDir, 'system', 'nginx', 'conf.d', 'upstream')
+    const sourceNginxDir = join(sourceUpstreamProjectDir, 'system', 'upstream')
     const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
-    const dataNginxDir = join(dataUpstreamProjectDir, 'system', 'nginx', 'conf.d', 'upstream')
+    const dataNginxDir = join(dataUpstreamProjectDir, 'system', 'upstream')
 
     await this.removeSystem(sourceNginxDir, project)
     await this.removeProject(sourceUpstreamProjectDir, project)
@@ -70,7 +70,7 @@ export default class ProjectTemplate {
 
   async removeLocalProject(project: string) {
     const dataLocalProjectDir = await this.env.get(Env.DATA_LOCAL_PROJECT_DIR)
-    const dataNginxDir = join(dataLocalProjectDir, 'system', 'nginx', 'conf.d', 'local')
+    const dataNginxDir = join(dataLocalProjectDir, 'system', 'local')
 
     await this.removeSystem(dataNginxDir, project)
     await this.removeProject(dataLocalProjectDir, project)
