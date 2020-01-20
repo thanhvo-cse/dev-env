@@ -1,8 +1,8 @@
 {
-  "name": "dev-env",
-  "description": "dev-env tool",
-  "version": "0.0.0",
-  "author": "Thanh Vo",
+  "name": "@thanhvo-cse/dev-env",
+  "description": "Development environment management tool",
+  "version": "0.0.3",
+  "author": "Thanh Vo - thanhvo.cse@gmail.com",
   "bin": {
     "dev-env": "./bin/run"
   },
@@ -12,8 +12,14 @@
     "@oclif/config": "^1.13.3",
     "@oclif/plugin-help": "^2.2.3",
     "@types/fs-extra": "^8.0.1",
-    "googleapis": "^39.2.0",
-    "tslib": "^1.10.0"
+    "compressing": "^1.5.0",
+    "etl": "^0.6.10",
+    "googleapis": "^46.0.0",
+    "js-yaml": "^3.13.1",
+    "readline-promise": "^1.0.4",
+    "replace": "^1.1.5",
+    "tslib": "^1.10.0",
+    "zip-a-folder": "0.0.10"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",

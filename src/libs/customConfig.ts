@@ -9,6 +9,9 @@ export default class CustomConfig {
 
   static readonly WORKSPACE_DIR: string = 'WORKSPACE_DIR'
   static readonly NETWORK: string = 'NETWORK'
+  static readonly GDRIVE_ID: string = 'GDRIVE_ID'
+  static readonly DOCKER_SOURCE_DIR: string = 'DOCKER_SOURCE_DIR'
+  static readonly XDEBUG_IDE_KEY: string = 'XDEBUG_IDE_KEY'
 
   private env: Env = new Env()
 
@@ -19,13 +22,18 @@ export default class CustomConfig {
 
   async set(key: string, value: any) {
     await this.initialize()
-    this.configs = {...this.configs, ...{ [key]: value }}
+    this.configs = {...this.configs, ...{[key]: value}}
     fs.writeJsonSync(this.configPath, this.configs)
   }
 
   private async initialize() {
     if (!this.configs) {
-      this.configPath = path.join(await this.env.get(Env.CONFIG_CONFIG_DIR), this.FILENAME)
+      const configDir = await this.env.get(Env.CONFIG_CONFIG_DIR);
+      this.configPath = path.join(configDir, this.FILENAME)
+
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, {recursive: true})
+      }
 
       if (!fs.existsSync(this.configPath)) {
         fs.writeJsonSync(this.configPath, {})
@@ -33,7 +41,5 @@ export default class CustomConfig {
 
       this.configs = fs.readJsonSync(this.configPath)
     }
-
-    return this.configs
   }
 }

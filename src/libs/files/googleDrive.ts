@@ -1,142 +1,188 @@
 import * as fs from 'fs'
 import {join} from 'path'
-import * as readline from 'readline'
+import readline from 'readline-promise'
 import {google} from 'googleapis'
+import CustomConfig from "../customConfig";
 
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
   private readonly SCOPES = [
-      'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive',
   ]
+
+  private customConfig: CustomConfig = new CustomConfig()
+  private oAuth2Client: any
+  private drive: any
 
   // The file token.json stores the user's access and refresh tokens, and is
   // created automatically when the authorization flow completes for the first
   // time.
   private readonly TOKEN_PATH = 'token.json'
 
-  async traversal(folder: string, name: string, callback: any) {
-    this.find(folder, name,function(auth: any, folderItem: any) {
-      const drive = google.drive({version: 'v3', auth})
-      drive.files.list({
-        q: `parents in '${folderItem.id}'`,
-        fields: 'files(id, name)'
-      }, (err, res: any) => {
-        if (err) return console.log('The API returned an error: ' + err)
-        const files = res.data.files
-        if (files.length) {
-          console.log('Files:')
-          files.map((file: any) => {
-            console.log(`${file.name} (${file.id})`)
-            callback(auth, file)
-          })
-        } else {
-          console.log('No files found.')
-        }
-      })
-    })
-  }
-
-  async find(folder: string, name: string, callback: any) {
-    this.execute(function (auth: any) {
-      const drive = google.drive({version: 'v3', auth})
-      drive.files.list({
-        q: `parents in '${folder}' and name='${name}'`,
-        fields: 'files(id, name)',
-      }, (err, res: any) => {
-        if (err) return console.log('The API returned an error: ' + err)
-        const files = res.data.files
-        if (files.length) {
-          console.log(`${files[0].name} (${files[0].id})`)
-          callback(auth, files[0])
-        } else {
-          console.log('No files found.')
-        }
-      })
-    })
-  }
-
-  async download(folder: string, target: string, dest: string, callback: any) {
-    this.traversal(folder, target,function(auth: any, item: any) {
-      var destFile = fs.createWriteStream(join(dest, item.name))
-      const drive = google.drive({version: 'v3', auth})
-      drive.files.get({
-        fileId: item.id,
-        alt: 'media'
-      },
-          {responseType: 'stream'},
-          function(err, res: any){
-            res.data
-                .on('end', () => {
-                    console.log(`Download completed: ${target}`)
-                    callback()
-                  })
-                .on('error', (err: any) => {
-                    console.log('Error', err)
-                  })
-                // .pipe(destFile)
-          }
-      )
-    })
-  }
-
-  private async execute(callback: any) {
-    // Load client secrets from a local file.
-    fs.readFile(join(__dirname, './gdrive.json'), (err, content) => {
-      if (err) return console.log('Error loading client secret file:', err)
-      // Authorize a client with credentials, then call the Google Drive API.
-      this.authorize(JSON.parse(content + ''), callback)
-    })
-
-  }
-
-  /**
-   * Create an OAuth2 client with the given credentials, and then execute the
-   * given callback function.
-   * @param {Object} credentials The authorization client credentials.
-   * @param {function} callback The callback to call with the authorized client.
-   */
-  private async authorize(credentials: any, callback: any) {
+  constructor() {
+    const content = fs.readFileSync(join(__dirname, './gdrive.json'))
+    const credentials = JSON.parse(content + '')
     const {client_secret, client_id, redirect_uris} = credentials.installed
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0])
-
-    // Check if we have previously stored a token.
-    fs.readFile(join(__dirname, this.TOKEN_PATH), (err, token) => {
-      if (err) return this.getAccessToken(oAuth2Client, callback)
-      oAuth2Client.setCredentials(JSON.parse(token + ''))
-      callback(oAuth2Client)
-    })
+    this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
+    this.drive = google.drive({version: 'v3', auth: this.oAuth2Client})
   }
 
-  /**
-   * Get and store new token after prompting for user authorization, and then
-   * execute the given callback with the authorized OAuth2 client.
-   * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
-   * @param {getEventsCallback} callback The callback for the authorized client.
-   */
-  private async getAccessToken(oAuth2Client: any, callback: any) {
-    const authUrl = oAuth2Client.generateAuthUrl({
+  async upload(folder: string, fileName: string, source: string) {
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_ID)
+    let dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    if (dir === undefined) {
+      try {
+        const res = await this.drive.files.create({
+          resource: {
+            'name': folder,
+            mimeType: 'application/vnd.google-apps.folder',
+            parents: [root]
+          },
+          fields: 'id'
+        })
+
+        dir = res.data
+        console.log(`Created folder: ${folder}`)
+      } catch (e) {
+        console.log('The API returned an error: ' + e.message)
+      }
+    }
+
+    this.remove(dir.id, fileName)
+    try {
+      const res = await this.drive.files.create({
+        resource: {
+          'name': fileName,
+          parents: [dir.id]
+        },
+        media: {
+          mimeType: 'application/zip',
+          body: fs.createReadStream(source)
+        },
+        fields: 'id'
+      })
+
+      console.log(`Upload completed: ${fileName}`)
+    } catch (e) {
+      console.log('The API returned an error: ' + e.message)
+    }
+  }
+
+  async download(folder: string, fileName: string, dest: string) {
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_ID)
+    const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    if (dir !== undefined) {
+      const file = await this.find(`parents in '${dir.id}' and name='${fileName}'`)
+
+      if (file[0]) {
+        const item = file[0]
+        try {
+          await this.drive.files.get(
+            {
+              fileId: item.id,
+              alt: 'media'
+            },
+            {responseType: 'stream'}
+          ).then(res => {
+              return new Promise((resolve, reject) => {
+                let progress = 0;
+                let buf = new Array();
+                res.data
+                  .on('data', d => {
+                    buf.push(d)
+                    progress += d.length;
+                    if (process.stdout.isTTY) {
+                      console.log(`Downloaded ${progress} bytes`)
+                    }
+                  })
+                  .on('end', () => {
+                    const buffer = Buffer.concat(buf)
+                    const filePath = join(dest, item.name)
+                    fs.writeFileSync(filePath, buffer)
+                    resolve()
+                    console.log('Finish streaming')
+                  })
+                  .on('error', err => {
+                    console.error('Error downloading file.');
+                    reject(err);
+                  })
+              })
+            }
+          )
+
+          console.log(`Download completed: ${item.name}`)
+        } catch (e) {
+          console.log('Error', e.message)
+        }
+      }
+    }
+  }
+
+  private async remove(root: string, fileName: string) {
+    try {
+      await this.authorize()
+      const file = await this.find(`parents in '${root}' and name='${fileName}'`)
+      if (file[0]) {
+        const files = await this.find(`parents in '${file[0].id}'`)
+        const res = this.drive.files.delete({
+          'fileId': file[0].id
+        });
+      }
+    } catch (e) {
+      console.log('The API returned an error: ' + e.message)
+    }
+  }
+
+  private async find(cond: string) {
+    try {
+      await this.authorize()
+      const res = await this.drive.files.list({
+        q: 'trashed=false and ' + cond,
+        fields: 'files(id, name)',
+      })
+
+      const files = res.data.files
+      if (files && files.length) {
+        return files
+      }
+    } catch (e) {
+      console.log('The API returned an error: ' + e.message)
+    }
+
+    return []
+  }
+
+  private async authorize() {
+    try {
+      const token = fs.readFileSync(join(__dirname, this.TOKEN_PATH))
+      this.oAuth2Client.setCredentials(JSON.parse(token + ''))
+    } catch (e) {
+      await this.getAccessToken()
+    }
+  }
+
+  private async getAccessToken() {
+    const authUrl = this.oAuth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: this.SCOPES,
     })
+
     console.log('Authorize this app by visiting this url:', authUrl)
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     })
-    rl.question('Enter the code from that page here: ', (code) => {
-      rl.close()
-      oAuth2Client.getToken(code, (err: any, token: string) => {
-        if (err) return console.error('Error retrieving access token', err)
-        oAuth2Client.setCredentials(token)
-        // Store the token to disk for later program executions
-        fs.writeFile(join(__dirname, this.TOKEN_PATH), JSON.stringify(token), (err) => {
-          if (err) return console.error(err)
-          console.log('Token stored')
-        })
-        callback(oAuth2Client)
-      })
-    })
+
+    const code = await rl.questionAsync('Enter the code from that page here: ')
+    try {
+      const {tokens} = await this.oAuth2Client.getToken(code)
+      this.oAuth2Client.setCredentials(tokens);
+
+      fs.writeFileSync(join(__dirname, this.TOKEN_PATH), JSON.stringify(tokens))
+      console.log('Token stored')
+    } catch (e) {
+      console.error('Error retrieving access token', e.message)
+    }
   }
 
 }
