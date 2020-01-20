@@ -28,7 +28,7 @@ export class GoogleDrive {
   }
 
   async upload(folder: string, fileName: string, source: string) {
-    const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_ID)
     let dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
     if (dir === undefined) {
       try {
@@ -69,7 +69,7 @@ export class GoogleDrive {
   }
 
   async download(folder: string, fileName: string, dest: string) {
-    const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
+    const root = await this.customConfig.get(CustomConfig.GDRIVE_ID)
     const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
     if (dir !== undefined) {
       const file = await this.find(`parents in '${dir.id}' and name='${fileName}'`)

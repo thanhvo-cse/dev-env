@@ -16,8 +16,8 @@ export default class Configure extends Command {
         'workspace:show',
         'network:set',
         'network:show',
-        'gdrive_project:set',
-        'gdrive_project:show',
+        'gdrive_id:set',
+        'gdrive_id:show',
         'docker_source_dir:set',
         'docker_source_dir:show',
         'xdebug_ide_key:set',
@@ -46,10 +46,10 @@ export default class Configure extends Command {
         await this.customConfig.set(CustomConfig.NETWORK, this.args.value)
       } else if (this.args.command == 'network:show') {
         console.log(await this.customConfig.get(CustomConfig.NETWORK))
-      } else if (this.args.command == 'gdrive_project:set') {
-        await this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, this.args.value)
-      } else if (this.args.command == 'gdrive_project:show') {
-        console.log(await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID))
+      } else if (this.args.command == 'gdrive_id:set') {
+        await this.customConfig.set(CustomConfig.GDRIVE_ID, this.args.value)
+      } else if (this.args.command == 'gdrive_id:show') {
+        console.log(await this.customConfig.get(CustomConfig.GDRIVE_ID))
       } else if (this.args.command == 'docker_source_dir:set') {
         await this.customConfig.set(CustomConfig.DOCKER_SOURCE_DIR, this.args.value)
       } else if (this.args.command == 'docker_source_dir:show') {
@@ -65,7 +65,7 @@ export default class Configure extends Command {
       const network = await cli.prompt('Network (en0)?')
       await this.customConfig.set(CustomConfig.NETWORK, network)
       const gdriveProject = await cli.prompt('Google drive project id?')
-      await this.customConfig.set(CustomConfig.GDRIVE_PROJECT_ID, gdriveProject)
+      await this.customConfig.set(CustomConfig.GDRIVE_ID, gdriveProject)
       const dockerSourceDir = await cli.prompt('Docker source dir?')
       await this.customConfig.set(CustomConfig.DOCKER_SOURCE_DIR, dockerSourceDir)
       const ideKey = await cli.prompt('Xdebug IDE key (PHPSTORM)?')

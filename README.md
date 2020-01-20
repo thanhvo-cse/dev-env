@@ -111,8 +111,8 @@ USAGE
   $ dev-env configure [COMMAND] [VALUE]
 
 ARGUMENTS
-  COMMAND  (workspace:set|workspace:show|network:set|network:show|gdrive_project:set|gdrive_project:show|docker_source_d
-           ir:set|docker_source_dir:show|xdebug_ide_key:set|xdebug_ide_key:show) configure commands
+  COMMAND  (workspace:set|workspace:show|network:set|network:show|gdrive_id:set|gdrive_id:show|docker_source_dir:set|doc
+           ker_source_dir:show|xdebug_ide_key:set|xdebug_ide_key:show) configure commands
 
   VALUE    configure values
 
