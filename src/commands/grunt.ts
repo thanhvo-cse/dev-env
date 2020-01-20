@@ -1,6 +1,6 @@
 import Command from '../base'
 import Const from './../const'
-import DockerUpstream from "../services/dockerUpstream"
+import {flags} from "@oclif/command";
 
 export default class Grunt extends Command {
   static description = 'Grunt'
@@ -17,17 +17,24 @@ export default class Grunt extends Command {
   ]
 
   static flags = {
-    ...Command.flags
+    ...Command.flags,
+    source: flags.boolean({
+      char: 's',
+      description: 'with source'
+    }),
+    local: flags.boolean({
+      char: 'l',
+      description: 'locally'
+    })
   }
-
-  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
+    const docker = await this.getDocker()
 
     const argv = process.argv.slice(4)
     let cmd = `grunt ${argv.join(' ')}`
 
-    await this.docker.webCmd(project, cmd)
+    await docker.webCmd(project, cmd)
   }
 }

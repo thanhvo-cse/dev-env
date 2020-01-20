@@ -3,7 +3,6 @@ import * as fs from 'fs-extra'
 import {join} from 'path'
 import Command from '../base'
 import Const from './../const'
-import DockerUpstream from './../services/dockerUpstream'
 import Env from "./../libs/env"
 import ProjectConfig from "./../libs/projectConfig"
 import Hosts from './../services/hosts'
@@ -26,7 +25,6 @@ export default class Import extends Command {
     ...Command.flags
   }
 
-  private docker: DockerUpstream = new DockerUpstream()
   private hosts: Hosts = new Hosts()
   private fileProjects: FileProjects = new FileProjects()
   private fileDb: FileDb = new FileDb()

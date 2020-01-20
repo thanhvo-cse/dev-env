@@ -1,11 +1,11 @@
 import Command from '../base'
 import Const from './../const'
 import {flags} from '@oclif/command'
-import cli from "cli-ux";
-import DockerSource from "../services/dockerSource"
+import cli from "cli-ux"
 import FileProjects from "../services/fileProjects"
 import FileDb from "../services/fileDb"
 import FileTransport from './../services/fileTransport'
+import DockerSource from './../services/dockerSource'
 
 export default class Export extends Command {
   static description = 'Export project'
@@ -27,18 +27,18 @@ export default class Export extends Command {
     })
   }
 
-  private docker: DockerSource = new DockerSource()
   private fileProjects: FileProjects = new FileProjects()
   private fileDb: FileDb = new FileDb()
   private fileTransport: FileTransport = new FileTransport()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
+    const docker = new DockerSource()
 
     await this.fileTransport.initUpstreamDir(project)
 
     cli.action.start('push docker images')
-    await this.docker.push(project)
+    await docker.push(project)
     cli.action.stop()
 
     cli.action.start('copy files')
@@ -53,10 +53,10 @@ export default class Export extends Command {
 
     if (this.flags.database) {
       cli.action.start('upload db files')
-      await this.docker.up(project)
+      docker.up(project)
 
       await setTimeout(async () => {
-        await this.docker.dbBackup(project)
+        await docker.dbBackup(project)
         await this.fileDb.upload(project)
         cli.action.stop()
       }, 5000)

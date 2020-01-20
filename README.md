@@ -60,8 +60,10 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -d, --debug  debug flag
-  -h, --help   show CLI help
+  -d, --debug   debug flag
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/artisan.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/artisan.ts)_
@@ -92,7 +94,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/composer.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/composer.ts)_
@@ -148,7 +152,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/down.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/down.ts)_
@@ -183,7 +189,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/grunt.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/grunt.ts)_
@@ -231,7 +239,9 @@ USAGE
   $ dev-env ls
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/ls.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/ls.ts)_
@@ -248,8 +258,10 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -d, --debug  debug flag
-  -h, --help   show CLI help
+  -d, --debug   debug flag
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/magento.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/magento.ts)_
@@ -266,8 +278,10 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -d, --debug  debug flag
-  -h, --help   show CLI help
+  -d, --debug   debug flag
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/magerun.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/magerun.ts)_
@@ -286,8 +300,9 @@ ARGUMENTS
   FILE     file path
 
 OPTIONS
-  -h, --help   show CLI help
-  -l, --local  locally
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/mysql.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/mysql.ts)_
@@ -304,7 +319,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/npm.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/npm.ts)_
@@ -321,8 +338,10 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -d, --debug  debug flag
-  -h, --help   show CLI help
+  -d, --debug   debug flag
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/php.ts)_
@@ -357,7 +376,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/restart.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/restart.ts)_

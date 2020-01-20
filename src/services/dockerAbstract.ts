@@ -13,9 +13,9 @@ export default abstract class DockerAbstract {
 
   async down(project: string) {
     if (project == 'all') {
-      await this.shell.sh('docker stop $(docker ps -q)')
+      await this.shell.sh('docker rm -f $(docker ps -aq)')
     } else {
-      await this.run(project, 'down -v')
+      await this.runWithSystem(project, 'down -v')
     }
   }
 
@@ -65,9 +65,7 @@ export default abstract class DockerAbstract {
   protected async runWithSystem(project: string, cmd: string) {
     const systemCompose = await this.getSystemCompose()
     const projectCompose = await this.getProjectCompose(project)
-    let {stdout} = await this.shell.sh(`
-      docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}
-    `)
+    await this.shell.sh(`docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}`)
   }
 
   protected async exec(project: string, container: string, cmd: string) {
@@ -77,4 +75,8 @@ export default abstract class DockerAbstract {
   protected async abstract getProjectCompose(project: string)
 
   protected async abstract getSystemCompose()
+
+  public async abstract getDbBackupFile(project: string)
+
+  public async abstract push(project: string)
 }

@@ -1,7 +1,7 @@
 import cli from 'cli-ux'
 import Command from '../base'
 import Const from './../const'
-import DockerUpstream from "../services/dockerUpstream";
+import {flags} from "@oclif/command"
 
 export default class Down extends Command {
   static description = 'Down a project'
@@ -16,16 +16,23 @@ export default class Down extends Command {
   ]
 
   static flags = {
-    ...Command.flags
+    ...Command.flags,
+    source: flags.boolean({
+      char: 's',
+      description: 'with source'
+    }),
+    local: flags.boolean({
+      char: 'l',
+      description: 'locally'
+    })
   }
-
-  private docker: DockerUpstream = new DockerUpstream()
 
   async run() {
     const project = this.args[Const.ARG_PROJECT]
+    const docker = await this.getDocker()
 
     cli.action.start('docker down')
-    await this.docker.down(project)
+    await docker.down(project)
     cli.action.stop()
   }
 }

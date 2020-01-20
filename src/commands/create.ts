@@ -3,7 +3,6 @@ import Command from '../base'
 import Const from './../const'
 import Env from "./../libs/env"
 import {flags} from "@oclif/command"
-import DockerUpstream from "../services/dockerUpstream"
 import ProjectTemplate from '../services/projectTemplate'
 import FileTransport from '../services/fileTransport'
 import Hosts from '../services/hosts'
@@ -34,7 +33,6 @@ export default class Create extends Command {
     })
   }
 
-  private docker: DockerUpstream = new DockerUpstream()
   private projectTemplate: ProjectTemplate = new ProjectTemplate()
   private fileTransport: FileTransport = new FileTransport()
   private hosts: Hosts = new Hosts()

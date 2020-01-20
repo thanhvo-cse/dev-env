@@ -1,6 +1,7 @@
 import Env from './../libs/Env'
 import DockerAbstract from './dockerAbstract'
-import {join} from "path";
+import {join} from "path"
+import Const from './../const'
 
 export default class DockerSource extends DockerAbstract {
   async up(project: string) {
@@ -23,5 +24,10 @@ export default class DockerSource extends DockerAbstract {
   protected async getSystemCompose() {
     const projectDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
     return join(projectDir, 'system', 'docker-compose.yml')
+  }
+
+  public async getDbBackupFile(project: string) {
+    const dbBackupDir = await this.env.get(Env.DATA_UPSTREAM_DB_BACKUP_DIR)
+    return join(dbBackupDir, project, Const.DB_FILE)
   }
 }

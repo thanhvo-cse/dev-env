@@ -1,10 +1,7 @@
 import Command from '../base'
 import Const from './../const'
 import * as fs from "fs-extra"
-import {join} from "path"
-import Env from "../libs/env"
-import DockerUpstream from "../services/dockerUpstream"
-import {flags} from "@oclif/command";
+import {flags} from "@oclif/command"
 
 export default class Mysql extends Command {
   static description = 'Mysql'
@@ -36,30 +33,32 @@ export default class Mysql extends Command {
 
   static flags = {
     ...Command.flags,
+    source: flags.boolean({
+      char: 's',
+      description: 'with source'
+    }),
     local: flags.boolean({
       char: 'l',
       description: 'locally'
     })
   }
 
-  private docker: DockerUpstream = new DockerUpstream()
-
   async run() {
     const project = this.args[Const.ARG_PROJECT]
-    const upstreamDbBackupDir = await this.env.get(Env.DATA_UPSTREAM_DB_BACKUP_DIR)
+    const docker = await this.getDocker()
 
     if (this.args.command == 'backup') {
-      await this.docker.dbBackup(project)
+      await docker.dbBackup(project)
 
       if (this.args.file != undefined) {
-        await fs.copy(join(upstreamDbBackupDir, project, 'database.sql'), this.args.file)
+        await fs.copy(await docker.getDbBackupFile(project), this.args.file)
       }
     } else if (this.args.command == 'restore') {
       if (this.args.file != undefined) {
-        await fs.copy(this.args.file, join(upstreamDbBackupDir, project, 'database.sql'))
+        await fs.copy(this.args.file, await docker.getDbBackupFile(project))
       }
 
-      await this.docker.dbRestore(project)
+      await docker.dbRestore(project)
     }
   }
 }

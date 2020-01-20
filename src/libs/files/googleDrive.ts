@@ -29,7 +29,25 @@ export class GoogleDrive {
 
   async upload(folder: string, fileName: string, source: string) {
     const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
-    const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    let dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
+    if (dir === undefined) {
+      try {
+        const res = await this.drive.files.create({
+          resource: {
+            'name': folder,
+            mimeType: 'application/vnd.google-apps.folder',
+            parents: [root]
+          },
+          fields: 'id'
+        })
+
+        dir = res.data
+        console.log(`Created folder: ${folder}`)
+      } catch (e) {
+        console.log('The API returned an error: ' + e.message)
+      }
+    }
+
     this.remove(dir.id, fileName)
     try {
       const res = await this.drive.files.create({
@@ -53,47 +71,49 @@ export class GoogleDrive {
   async download(folder: string, fileName: string, dest: string) {
     const root = await this.customConfig.get(CustomConfig.GDRIVE_PROJECT_ID)
     const dir = (await this.find(`parents in '${root}' and name='${folder}'`))[0]
-    const file = await this.find(`parents in '${dir.id}' and name='${fileName}'`)
+    if (dir !== undefined) {
+      const file = await this.find(`parents in '${dir.id}' and name='${fileName}'`)
 
-    if (file[0]) {
-      const item = file[0]
-      try {
-        await this.drive.files.get(
-          {
-            fileId: item.id,
-            alt: 'media'
-          },
-          {responseType: 'stream'}
-        ).then(res => {
-            return new Promise((resolve, reject) => {
-              let progress = 0;
-              let buf = new Array();
-              res.data
-                .on('data', d => {
-                  buf.push(d)
-                  progress += d.length;
-                  if (process.stdout.isTTY) {
-                    console.log(`Downloaded ${progress} bytes`)
-                  }
-                })
-                .on('end', () => {
-                  const buffer = Buffer.concat(buf)
-                  const filePath = join(dest, item.name)
-                  fs.writeFileSync(filePath, buffer)
-                  resolve()
-                  console.log('Finish streaming')
-                })
-                .on('error', err => {
-                  console.error('Error downloading file.');
-                  reject(err);
-                })
-            })
-          }
-        )
+      if (file[0]) {
+        const item = file[0]
+        try {
+          await this.drive.files.get(
+            {
+              fileId: item.id,
+              alt: 'media'
+            },
+            {responseType: 'stream'}
+          ).then(res => {
+              return new Promise((resolve, reject) => {
+                let progress = 0;
+                let buf = new Array();
+                res.data
+                  .on('data', d => {
+                    buf.push(d)
+                    progress += d.length;
+                    if (process.stdout.isTTY) {
+                      console.log(`Downloaded ${progress} bytes`)
+                    }
+                  })
+                  .on('end', () => {
+                    const buffer = Buffer.concat(buf)
+                    const filePath = join(dest, item.name)
+                    fs.writeFileSync(filePath, buffer)
+                    resolve()
+                    console.log('Finish streaming')
+                  })
+                  .on('error', err => {
+                    console.error('Error downloading file.');
+                    reject(err);
+                  })
+              })
+            }
+          )
 
-        console.log(`Download completed: ${item.name}`)
-      } catch (e) {
-        console.log('Error', e.message)
+          console.log(`Download completed: ${item.name}`)
+        } catch (e) {
+          console.log('Error', e.message)
+        }
       }
     }
   }

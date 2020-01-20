@@ -1,7 +1,6 @@
 import {flags} from '@oclif/command'
 import Command from '../base'
 import Const from './../const'
-import DockerUpstream from "../services/dockerUpstream"
 
 export default class Magerun extends Command {
   static description = 'Magerun'
@@ -19,6 +18,14 @@ export default class Magerun extends Command {
 
   static flags = {
     ...Command.flags,
+    source: flags.boolean({
+      char: 's',
+      description: 'with source'
+    }),
+    local: flags.boolean({
+      char: 'l',
+      description: 'locally'
+    }),
     debug: flags.boolean({
       char: 'd',
       description: 'debug flag',
@@ -26,14 +33,13 @@ export default class Magerun extends Command {
     })
   }
 
-  private docker: DockerUpstream = new DockerUpstream()
-
   async run() {
     const project = this.args[Const.ARG_PROJECT]
+    const docker = await this.getDocker()
 
     const argv = process.argv.slice(4).filter(e => e != '-d' && e != '--debug')
     let cmd = `magerun ${argv.join(' ')}`
 
-    await this.docker.webCmd(project, cmd, this.flags.hasOwnProperty('debug'))
+    docker.webCmd(project, cmd, this.flags.debug)
   }
 }

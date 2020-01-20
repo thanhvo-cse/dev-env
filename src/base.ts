@@ -7,6 +7,10 @@ import CustomConfig from "./libs/customConfig"
 import ProjectConfig from "./libs/projectConfig"
 import Shell from './libs/shell'
 import {join} from "path"
+import DockerAbstract from "./services/dockerAbstract"
+import DockerSource from "./services/dockerSource"
+import DockerLocal from "./services/dockerLocal"
+import DockerUpstream from "./services/dockerUpstream"
 
 export default abstract class extends Command {
   protected env: Env = new Env()
@@ -63,5 +67,18 @@ export default abstract class extends Command {
     if (this.args.hasOwnProperty(Const.ARG_PROJECT)) {
       this.env.set(Env.PROJECT_NAME, this.args[Const.ARG_PROJECT])
     }
+  }
+
+  protected async getDocker(): Promise<DockerAbstract> {
+    let docker: DockerAbstract
+    if (this.flags.source) {
+      docker = new DockerSource()
+    } else if (this.flags.local) {
+      docker = new DockerLocal()
+    } else {
+      docker = new DockerUpstream()
+    }
+
+    return docker
   }
 }
