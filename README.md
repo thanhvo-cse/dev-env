@@ -19,7 +19,7 @@ $ npm install -g @thanhvo-cse/dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-@thanhvo-cse/dev-env/0.0.1 darwin-x64 node-v12.14.0
+@thanhvo-cse/dev-env/0.0.1 darwin-x64 node-v12.14.1
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -44,6 +44,7 @@ USAGE
 * [`dev-env mysql PROJECT COMMAND [FILE]`](#dev-env-mysql-project-command-file)
 * [`dev-env npm PROJECT`](#dev-env-npm-project)
 * [`dev-env php PROJECT`](#dev-env-php-project)
+* [`dev-env rebuild PROJECT`](#dev-env-rebuild-project)
 * [`dev-env remove PROJECT`](#dev-env-remove-project)
 * [`dev-env restart PROJECT`](#dev-env-restart-project)
 * [`dev-env up PROJECT`](#dev-env-up-project)
@@ -345,6 +346,25 @@ OPTIONS
 ```
 
 _See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/php.ts)_
+
+## `dev-env rebuild PROJECT`
+
+Rebuild a project
+
+```
+USAGE
+  $ dev-env rebuild PROJECT
+
+ARGUMENTS
+  PROJECT  project name
+
+OPTIONS
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
+```
+
+_See code: [src/commands/rebuild.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.1/src/commands/rebuild.ts)_
 
 ## `dev-env remove PROJECT`
 
