@@ -61,6 +61,10 @@ export default abstract class DockerAbstract {
 
   protected async docker(project: string, cmd: string) {
     const projectCompose = await this.getProjectCompose(project)
+    if (!fs.existsSync(projectCompose)) {
+      console.log(`project '${project} doesn't exist`)
+      return
+    }
 
     let containers = Array()
     const doc = yaml.safeLoad(fs.readFileSync(projectCompose, 'utf8'))
@@ -76,10 +80,21 @@ export default abstract class DockerAbstract {
   protected async dockerCompose(project: string, cmd: string) {
     const systemCompose = await this.getSystemCompose()
     const projectCompose = await this.getProjectCompose(project)
+    if (!fs.existsSync(projectCompose)) {
+      console.log(`project '${project} doesn't exist`)
+      return
+    }
+
     await this.shell.sh(`docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}`)
   }
 
   protected async exec(project: string, container: string, cmd: string) {
+    const projectCompose = await this.getProjectCompose(project)
+    if (!fs.existsSync(projectCompose)) {
+      console.log(`project '${project} doesn't exist`)
+      return
+    }
+
     let {stdout} = await this.shell.sh(`docker exec -i ${container}_${project} bash -c "${cmd}"`)
   }
 
