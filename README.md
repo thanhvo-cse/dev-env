@@ -15,11 +15,11 @@ dev-env tool
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g dev-env
+$ npm install -g @thanhvo-cse/dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-dev-env/0.0.0 darwin-x64 node-v12.14.0
+@thanhvo-cse/dev-env/0.0.0 darwin-x64 node-v12.14.0
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -165,7 +165,8 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -h, --help  show CLI help
+  -d, --database  database
+  -h, --help      show CLI help
 ```
 
 _See code: [src/commands/export.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/export.ts)_
@@ -285,7 +286,8 @@ ARGUMENTS
   FILE     file path
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help   show CLI help
+  -l, --local  locally
 ```
 
 _See code: [src/commands/mysql.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/mysql.ts)_
@@ -334,7 +336,7 @@ USAGE
   $ dev-env remove PROJECT
 
 ARGUMENTS
-  PROJECT  project name
+  PROJECT  project name | all
 
 OPTIONS
   -h, --help   show CLI help
@@ -372,8 +374,9 @@ ARGUMENTS
   PROJECT  project name
 
 OPTIONS
-  -b, --build  build
-  -h, --help   show CLI help
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
 ```
 
 _See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.0/src/commands/up.ts)_

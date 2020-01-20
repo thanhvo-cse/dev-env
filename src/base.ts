@@ -39,6 +39,7 @@ export default abstract class extends Command {
   }
 
   async init() {
+    // @ts-ignore
     const {args, flags} = this.parse(this.constructor)
     this.args = args
     this.flags = flags
