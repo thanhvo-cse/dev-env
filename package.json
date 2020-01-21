@@ -1,7 +1,7 @@
 {
   "name": "@thanhvo-cse/dev-env",
   "description": "Development environment management tool",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Thanh Vo - thanhvo.cse@gmail.com",
   "bin": {
     "dev-env": "./bin/run"
@@ -36,7 +36,8 @@
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "src/libs/files/gdrive.json"
   ],
   "homepage": "https://github.com/thanhvo-cse/dev-env",
   "keywords": [
