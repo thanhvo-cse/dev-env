@@ -3,7 +3,7 @@ import Command from '../base'
 import Const from './../const'
 
 export default class Artisan extends Command {
-  static description = 'Magerun'
+  static description = 'Laravel Artisan'
 
   static strict = false
 
