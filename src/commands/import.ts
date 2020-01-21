@@ -56,10 +56,10 @@ export default class Import extends Command {
       if (gitRepo != '') {
         cli.action.start('checkout codebase')
         await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+        cli.action.stop()
       } else {
         fs.mkdirSync(projectWorkspace, {recursive: true})
       }
-      cli.action.stop()
     }
 
     if (fs.existsSync(join(dataUpstreamDbBackupDir, project, Const.DB_FILE))) {
