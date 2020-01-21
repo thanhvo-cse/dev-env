@@ -20,7 +20,7 @@ export class GoogleDrive {
   private readonly TOKEN_PATH = 'token.json'
 
   constructor() {
-    const content = fs.readFileSync(join(__dirname, './gdrive.json'))
+    const content = fs.readFileSync('gdrive.json')
     const credentials = JSON.parse(content + '')
     const {client_secret, client_id, redirect_uris} = credentials.installed
     this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
@@ -154,7 +154,7 @@ export class GoogleDrive {
 
   private async authorize() {
     try {
-      const token = fs.readFileSync(join(__dirname, this.TOKEN_PATH))
+      const token = fs.readFileSync(this.TOKEN_PATH)
       this.oAuth2Client.setCredentials(JSON.parse(token + ''))
     } catch (e) {
       await this.getAccessToken()
@@ -178,7 +178,7 @@ export class GoogleDrive {
       const {tokens} = await this.oAuth2Client.getToken(code)
       this.oAuth2Client.setCredentials(tokens);
 
-      fs.writeFileSync(join(__dirname, this.TOKEN_PATH), JSON.stringify(tokens))
+      fs.writeFileSync(this.TOKEN_PATH, JSON.stringify(tokens))
       console.log('Token stored')
     } catch (e) {
       console.error('Error retrieving access token', e.message)
