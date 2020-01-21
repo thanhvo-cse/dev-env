@@ -1,7 +1,7 @@
 {
   "name": "@thanhvo-cse/dev-env",
   "description": "Development environment management tool",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Thanh Vo - thanhvo.cse@gmail.com",
   "bin": {
     "dev-env": "./bin/run"
@@ -12,6 +12,7 @@
     "@oclif/config": "^1.13.3",
     "@oclif/plugin-help": "^2.2.3",
     "@types/fs-extra": "^8.0.1",
+    "cli-ux": "^5.4.1",
     "compressing": "^1.5.0",
     "etl": "^0.6.10",
     "googleapis": "^46.0.0",
