@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import {join} from 'path'
 import readline from 'readline-promise'
 import {google} from 'googleapis'
-import CustomConfig from "../customConfig";
+import CustomConfig from "../customConfig"
+import Env from '../env'
 
 export class GoogleDrive {
   // If modifying these scopes, delete token.json.
@@ -10,6 +11,7 @@ export class GoogleDrive {
     'https://www.googleapis.com/auth/drive',
   ]
 
+  private env: Env = new Env()
   private customConfig: CustomConfig = new CustomConfig()
   private oAuth2Client: any
   private drive: any
@@ -18,14 +20,6 @@ export class GoogleDrive {
   // created automatically when the authorization flow completes for the first
   // time.
   private readonly TOKEN_PATH = 'token.json'
-
-  constructor() {
-    const content = fs.readFileSync('gdrive.json')
-    const credentials = JSON.parse(content + '')
-    const {client_secret, client_id, redirect_uris} = credentials.installed
-    this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
-    this.drive = google.drive({version: 'v3', auth: this.oAuth2Client})
-  }
 
   async upload(folder: string, fileName: string, source: string) {
     const root = await this.customConfig.get(CustomConfig.GDRIVE_ID)
@@ -153,8 +147,14 @@ export class GoogleDrive {
   }
 
   private async authorize() {
+    const content = fs.readFileSync(join(await this.env.get(Env.CONFIG_ROOT), './gdrive.json'))
+    const credentials = JSON.parse(content + '')
+    const {client_secret, client_id, redirect_uris} = credentials.installed
+    this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
+    this.drive = google.drive({version: 'v3', auth: this.oAuth2Client})
+
     try {
-      const token = fs.readFileSync(this.TOKEN_PATH)
+      const token = fs.readFileSync(join(await this.env.get(Env.CONFIG_ROOT), this.TOKEN_PATH))
       this.oAuth2Client.setCredentials(JSON.parse(token + ''))
     } catch (e) {
       await this.getAccessToken()
@@ -178,7 +178,7 @@ export class GoogleDrive {
       const {tokens} = await this.oAuth2Client.getToken(code)
       this.oAuth2Client.setCredentials(tokens);
 
-      fs.writeFileSync(this.TOKEN_PATH, JSON.stringify(tokens))
+      fs.writeFileSync(join(await this.env.get(Env.CONFIG_ROOT), this.TOKEN_PATH), JSON.stringify(tokens))
       console.log('Token stored')
     } catch (e) {
       console.error('Error retrieving access token', e.message)
