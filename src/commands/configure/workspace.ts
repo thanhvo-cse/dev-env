@@ -1,5 +1,4 @@
 import Command from '../../base'
-import cli from 'cli-ux'
 import CustomConfig from "../../libs/customConfig"
 
 export default class Workspace extends Command {
