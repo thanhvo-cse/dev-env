@@ -6,6 +6,8 @@ import {flags} from "@oclif/command"
 import ProjectTemplate from '../services/projectTemplate'
 import FileTransport from '../services/fileTransport'
 import Hosts from '../services/hosts'
+import {join} from "path";
+import * as fs from "fs-extra";
 
 export default class Create extends Command {
   static description = 'Create project'
@@ -30,6 +32,12 @@ export default class Create extends Command {
     local: flags.boolean({
       char: 'l',
       description: 'locally'
+    }),
+    git: flags.string( {
+      char: 'g',
+      description: 'Git source path',
+      default: '',
+      multiple: false
     })
   }
 
@@ -49,6 +57,17 @@ export default class Create extends Command {
     } else {
       await this.projectTemplate.createUpstreamProject(template, project)
       await this.fileTransport.initUpstreamDir(project)
+    }
+
+    if (this.flags.git) {
+      const gitRepo = this.flags.git
+      const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
+      if (!fs.existsSync(projectWorkspace)) {
+        if (gitRepo != '') {
+          cli.action.start('checkout codebase')
+          await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+        }
+      }
     }
 
     cli.action.stop()
