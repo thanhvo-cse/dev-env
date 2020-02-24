@@ -46,6 +46,9 @@
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
+    "topics": {
+      "configure": { "description": "Manage configurations" }
+    },
     "commands": "./lib/commands",
     "bin": "dev-env",
     "plugins": [
