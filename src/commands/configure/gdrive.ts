@@ -17,8 +17,8 @@ export default class Gdrive extends Command {
   }
 
   async run() {
-    if (this.args.command != undefined) {
-      await this.customConfig.set(CustomConfig.GDRIVE_ID, this.args.value)
+    if (this.args.key != undefined) {
+      await this.customConfig.set(CustomConfig.GDRIVE_ID, this.args.key)
     } else {
       console.log(await this.customConfig.get(CustomConfig.GDRIVE_ID))
     }

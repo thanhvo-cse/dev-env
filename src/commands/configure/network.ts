@@ -6,7 +6,7 @@ export default class Network extends Command {
 
   static args = [
     {
-      name: 'network name',
+      name: 'name',
       required: false,
       description: 'Set the network name'
     }
@@ -17,8 +17,8 @@ export default class Network extends Command {
   }
 
   async run() {
-    if (this.args.command != undefined) {
-      await this.customConfig.set(CustomConfig.NETWORK, this.args.value)
+    if (this.args.name != undefined) {
+      await this.customConfig.set(CustomConfig.NETWORK, this.args.name)
     } else {
       console.log(await this.customConfig.get(CustomConfig.NETWORK))
     }

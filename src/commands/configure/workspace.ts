@@ -17,8 +17,8 @@ export default class Workspace extends Command {
   }
 
   async run() {
-    if (this.args.command != undefined) {
-      await this.customConfig.set(CustomConfig.WORKSPACE_DIR, this.args.value)
+    if (this.args.path != undefined) {
+      await this.customConfig.set(CustomConfig.WORKSPACE_DIR, this.args.path)
     } else {
       console.log(await this.customConfig.get(CustomConfig.WORKSPACE_DIR))
     }

@@ -7,7 +7,7 @@ export default class Docker_Source extends Command
 
   static args = [
     {
-      name: 'key',
+      name: 'path',
       required: false,
       description: 'Set the Docker source directory'
     }
@@ -16,10 +16,10 @@ export default class Docker_Source extends Command
   static flags = {
     ...Command.flags
   }
-    
+
   async run() {
-    if (this.args.command !== undefined) {
-      await this.customConfig.set(CustomConfig.DOCKER_SOURCE_DIR, this.args.value)
+    if (this.args.path !== undefined) {
+      await this.customConfig.set(CustomConfig.DOCKER_SOURCE_DIR, this.args.path)
     } else {
       console.log(await this.customConfig.get(CustomConfig.DOCKER_SOURCE_DIR))
     }

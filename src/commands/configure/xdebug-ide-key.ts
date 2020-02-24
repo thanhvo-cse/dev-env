@@ -18,8 +18,8 @@ export default class XdebugIdeKey extends Command
   }
 
   async run() {
-    if (this.args.command !== undefined) {
-      await this.customConfig.set(CustomConfig.XDEBUG_IDE_KEY, this.args.value)
+    if (this.args.key !== undefined) {
+      await this.customConfig.set(CustomConfig.XDEBUG_IDE_KEY, this.args.key)
     } else {
       console.log(await this.customConfig.get(CustomConfig.XDEBUG_IDE_KEY))
     }
