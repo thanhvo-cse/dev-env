@@ -19,7 +19,7 @@ $ npm install -g @thanhvo-cse/dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-@thanhvo-cse/dev-env/0.0.10 darwin-x64 node-v12.14.1
+@thanhvo-cse/dev-env/0.0.10 darwin-x64 node-v12.14.0
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -31,7 +31,11 @@ USAGE
 * [`dev-env artisan PROJECT`](#dev-env-artisan-project)
 * [`dev-env cleanup`](#dev-env-cleanup)
 * [`dev-env composer PROJECT`](#dev-env-composer-project)
-* [`dev-env configure [COMMAND] [VALUE]`](#dev-env-configure-command-value)
+* [`dev-env configure:docker-source [PATH]`](#dev-env-configuredocker-source-path)
+* [`dev-env configure:gdrive [KEY]`](#dev-env-configuregdrive-key)
+* [`dev-env configure:network [NAME]`](#dev-env-configurenetwork-name)
+* [`dev-env configure:workspace [PATH]`](#dev-env-configureworkspace-path)
+* [`dev-env configure:xdebug-ide-key [KEY]`](#dev-env-configurexdebug-ide-key-key)
 * [`dev-env create PROJECT TEMPLATE`](#dev-env-create-project-template)
 * [`dev-env down PROJECT`](#dev-env-down-project)
 * [`dev-env export PROJECT`](#dev-env-export-project)
@@ -102,25 +106,90 @@ OPTIONS
 
 _See code: [src/commands/composer.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/composer.ts)_
 
-## `dev-env configure [COMMAND] [VALUE]`
+## `dev-env configure:docker-source [PATH]`
 
-Manage configurations
+Set or show docker source directory
 
 ```
 USAGE
-  $ dev-env configure [COMMAND] [VALUE]
+  $ dev-env configure:docker-source [PATH]
 
 ARGUMENTS
-  COMMAND  (workspace:set|workspace:show|network:set|network:show|gdrive_id:set|gdrive_id:show|docker_source_dir:set|doc
-           ker_source_dir:show|xdebug_ide_key:set|xdebug_ide_key:show) configure commands
-
-  VALUE    configure values
+  PATH  Set the Docker source directory
 
 OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure.ts)_
+_See code: [src/commands/configure/docker-source.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure/docker-source.ts)_
+
+## `dev-env configure:gdrive [KEY]`
+
+Set or show gdrive id key
+
+```
+USAGE
+  $ dev-env configure:gdrive [KEY]
+
+ARGUMENTS
+  KEY  Set the Gdrive id key
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/configure/gdrive.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure/gdrive.ts)_
+
+## `dev-env configure:network [NAME]`
+
+Set or show network name
+
+```
+USAGE
+  $ dev-env configure:network [NAME]
+
+ARGUMENTS
+  NAME  Set the network name
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/configure/network.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure/network.ts)_
+
+## `dev-env configure:workspace [PATH]`
+
+Set or show workspace path
+
+```
+USAGE
+  $ dev-env configure:workspace [PATH]
+
+ARGUMENTS
+  PATH  Set the workspace path
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/configure/workspace.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure/workspace.ts)_
+
+## `dev-env configure:xdebug-ide-key [KEY]`
+
+Set and show Xdebug IDE Key
+
+```
+USAGE
+  $ dev-env configure:xdebug-ide-key [KEY]
+
+ARGUMENTS
+  KEY  Set the Xdebug IDE Key
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/configure/xdebug-ide-key.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.0.10/src/commands/configure/xdebug-ide-key.ts)_
 
 ## `dev-env create PROJECT TEMPLATE`
 
