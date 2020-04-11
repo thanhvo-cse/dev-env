@@ -5,7 +5,7 @@ export default class Shell {
 
   async sh(cmd: string, quiteFlag: boolean = false): Promise<any> {
     return new Promise(function (resolve, reject) {
-      const makeProcess = exec(cmd, { maxBuffer: this.MAX_BUFFER }, (err, stdout, stderr) => {
+      const makeProcess = exec(cmd, { maxBuffer: Shell.MAX_BUFFER }, (err, stdout, stderr) => {
         if (err) {
           reject(err)
         } else {
