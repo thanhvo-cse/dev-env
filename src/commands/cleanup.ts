@@ -1,7 +1,4 @@
-import cli from 'cli-ux'
 import Command from '../base'
-import CustomConfig from "../libs/customConfig";
-import Env from "../libs/env";
 
 export default class Cleanup extends Command {
   static description = 'Cleanup docker environment'
