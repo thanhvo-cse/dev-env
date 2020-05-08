@@ -33,8 +33,6 @@ export default class Remove extends Command {
   async run() {
     const project = this.args[Const.ARG_PROJECT]
     if (await cli.prompt(`Are you sure to remove project '${project}'? (y/n)`) == 'y') {
-      cli.action.start('remove files')
-
       if (this.flags.local) {
         if (project == 'all') {
           await fs.removeSync(await this.env.get(Env.DATA_LOCAL_PROJECT_DIR))
@@ -54,8 +52,6 @@ export default class Remove extends Command {
           await this.fileTransport.removeUpstreamDir(project)
         }
       }
-
-      cli.action.stop()
     }
   }
 }

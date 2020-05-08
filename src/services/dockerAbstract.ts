@@ -15,9 +15,27 @@ export default abstract class DockerAbstract {
 
   async down(project: string) {
     if (project == 'all') {
-      await this.shell.sh('docker rm -f $(docker ps -aq)')
+      let containers = (await this.shell.script(
+        `docker ps -aq`,
+        true
+      )).stdout
+      if (containers) {
+        await this.shell.cmd('docker', ['rm', '-f'].concat(containers.split("\n")))
+      }
     } else {
-      await this.docker(project, 'docker rm -f')
+      const projectCompose = await this.getProjectCompose(project)
+      if (!fs.existsSync(projectCompose)) {
+        console.log(`project '${project} doesn't exist`)
+        return
+      }
+
+      let containers = Array()
+      const doc = yaml.safeLoad(fs.readFileSync(projectCompose, 'utf8'))
+      for (const [key, value] of Object.entries(doc.services)) {
+        containers.push(key)
+      }
+
+      await this.shell.cmd('docker', ['rm', '-f'].concat(containers))
     }
   }
 
@@ -59,24 +77,6 @@ export default abstract class DockerAbstract {
     await this.exec(project, 'php', `cd /var/www/html/; ${cmd}`)
   }
 
-  protected async docker(project: string, cmd: string) {
-    const projectCompose = await this.getProjectCompose(project)
-    if (!fs.existsSync(projectCompose)) {
-      console.log(`project '${project} doesn't exist`)
-      return
-    }
-
-    let containers = Array()
-    const doc = yaml.safeLoad(fs.readFileSync(projectCompose, 'utf8'))
-    for (const [key, value] of Object.entries(doc.services)) {
-      containers.push(key)
-    }
-
-    const containersJoined = containers.join(' ')
-
-    await this.shell.sh(`${cmd} ${containersJoined}`)
-  }
-
   protected async dockerCompose(project: string, cmd: string) {
     const systemCompose = await this.getSystemCompose()
     const projectCompose = await this.getProjectCompose(project)
@@ -85,7 +85,7 @@ export default abstract class DockerAbstract {
       return
     }
 
-    await this.shell.sh(`docker-compose -f ${systemCompose} -f ${projectCompose} ${cmd}`)
+    await this.shell.cmd('docker-compose', ['-f', systemCompose, '-f', projectCompose].concat(cmd.split(' ')))
   }
 
   protected async exec(project: string, container: string, cmd: string) {
@@ -95,7 +95,7 @@ export default abstract class DockerAbstract {
       return
     }
 
-    let {stdout} = await this.shell.sh(`docker exec -i ${container}_${project} bash -c "${cmd}"`)
+    await this.shell.cmd('docker', ['exec', '-it', `${container}_${project}`, 'bash', '-c', cmd])
   }
 
   protected async abstract getProjectCompose(project: string)

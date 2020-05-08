@@ -1,4 +1,3 @@
-import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 import {join} from 'path'
 import Command from '../base'
@@ -37,26 +36,20 @@ export default class Import extends Command {
     await this.hosts.addHost('adminer', true)
     await this.hosts.addHost(project, true)
 
-    cli.action.start('download project files')
     await this.fileProjects.download('system')
     await this.fileProjects.download(project)
-    cli.action.stop()
 
-    cli.action.start('download db files')
     await this.fileDb.download(project)
     if (!fs.existsSync(dataUpstreamDbDir)) {
       fs.mkdirSync(dataUpstreamDbDir, {recursive: true})
     }
-    cli.action.stop()
 
     const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
     if (!fs.existsSync(projectWorkspace)) {
       const projectConfig = await this.getProjectConfig(project)
       const gitRepo = await projectConfig.get(ProjectConfig.GIT_REPO)
       if (gitRepo != '') {
-        cli.action.start('checkout codebase')
-        await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
-        cli.action.stop()
+        await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
       } else {
         fs.mkdirSync(projectWorkspace, {recursive: true})
       }

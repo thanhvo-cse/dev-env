@@ -1,4 +1,3 @@
-import cli from 'cli-ux'
 import {flags} from '@oclif/command'
 import Command from '../base'
 import Const from './../const'
