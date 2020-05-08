@@ -65,7 +65,7 @@ export default class Create extends Command {
       if (!fs.existsSync(projectWorkspace)) {
         if (gitRepo != '') {
           cli.action.start('checkout codebase')
-          await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+          await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
         }
       }
     }

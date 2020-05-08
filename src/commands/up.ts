@@ -31,8 +31,6 @@ export default class Up extends Command {
     const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
-    cli.action.start('docker up')
     await docker.up(project)
-    cli.action.stop()
   }
 }

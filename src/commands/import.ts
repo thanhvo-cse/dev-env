@@ -55,7 +55,7 @@ export default class Import extends Command {
       const gitRepo = await projectConfig.get(ProjectConfig.GIT_REPO)
       if (gitRepo != '') {
         cli.action.start('checkout codebase')
-        await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
+        await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
         cli.action.stop()
       } else {
         fs.mkdirSync(projectWorkspace, {recursive: true})

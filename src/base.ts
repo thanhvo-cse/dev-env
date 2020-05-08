@@ -54,7 +54,7 @@ export default abstract class extends Command {
     const network = await this.customConfig.get(CustomConfig.NETWORK)
     if (network) {
       try {
-        let {stdout} = await this.shell.sh(
+        let {stdout} = await this.shell.script(
           `ipconfig getifaddr ${await this.customConfig.get(CustomConfig.NETWORK)}`,
           true
         )

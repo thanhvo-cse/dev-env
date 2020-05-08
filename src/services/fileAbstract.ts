@@ -23,7 +23,7 @@ export default abstract class FileAbstract {
     const zipFile = join(sourcePath, `${project}.zip`)
     if (fs.existsSync(zipFile)) {
       const destDir = join(sourcePath, project)
-      await this.shell.sh(`unzip -qo ${zipFile} -d ${destDir}`)
+      await this.shell.cmd('unzip', ['-qo', zipFile, '-d', destDir])
       await fs.removeSync(zipFile)
     }
   }
