@@ -60,10 +60,8 @@ export default class Create extends Command {
     if (this.flags.git) {
       const gitRepo = this.flags.git
       const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
-      if (!fs.existsSync(projectWorkspace)) {
-        if (gitRepo != '') {
-          await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
-        }
+      if (!fs.existsSync(projectWorkspace) && gitRepo != '') {
+        await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
       }
     }
   }
