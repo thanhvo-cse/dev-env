@@ -40,8 +40,8 @@ export default class Import extends Command {
     await this.fileProjects.download(project)
 
     await this.fileDb.download(project)
-    if (!fs.existsSync(dataUpstreamDbDir)) {
-      fs.mkdirSync(dataUpstreamDbDir, {recursive: true})
+    if (!fs.existsSync(join(dataUpstreamDbDir, project))) {
+      fs.mkdirSync(join(dataUpstreamDbDir, project), {recursive: true})
     }
 
     const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)

@@ -1,7 +1,7 @@
 {
   "name": "@thanhvo-cse/dev-env",
   "description": "Development environment management tool",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Thanh Vo - thanhvo.cse@gmail.com",
   "bin": {
     "dev-env": "./bin/run"
@@ -20,7 +20,8 @@
     "readline-promise": "^1.0.4",
     "replace": "^1.1.5",
     "tslib": "^1.10.0",
-    "zip-a-folder": "0.0.10"
+    "zip-a-folder": "0.0.10",
+    "minimist": ">=0.2.1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
