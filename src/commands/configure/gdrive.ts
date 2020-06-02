@@ -2,13 +2,13 @@ import Command from '../../base'
 import CustomConfig from "../../libs/customConfig"
 
 export default class Gdrive extends Command {
-  static description = 'Set or show gdrive id key'
+  static description = 'Set or show gdrive folder key'
 
   static args = [
     {
       name: 'key',
       required: false,
-      description: 'Set the Gdrive id key'
+      description: 'Set the Gdrive folder key'
     }
   ]
 
