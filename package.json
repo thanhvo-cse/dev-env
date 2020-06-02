@@ -1,7 +1,7 @@
 {
   "name": "@thanhvo-cse/dev-env",
   "description": "Development environment management tool",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Thanh Vo - thanhvo.cse@gmail.com",
   "bin": {
     "dev-env": "./bin/run"
