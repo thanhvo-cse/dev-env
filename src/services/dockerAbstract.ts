@@ -49,7 +49,7 @@ export default abstract class DockerAbstract {
   }
 
   async dbRestore(project: string) {
-    await this.exec(project, 'db', `mysql -u root -p123456 < /home/database.sql`)
+    await this.exec(project, 'db', `mysql -u root -p123456 ${project} < /home/database.sql`)
   }
 
   async dbBackup(project: string) {
