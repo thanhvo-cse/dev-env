@@ -1,4 +1,3 @@
-import cli from 'cli-ux'
 import Command from '../base'
 import Const from './../const'
 import Env from "./../libs/env"
@@ -49,7 +48,6 @@ export default class Create extends Command {
     const project = this.args[Const.ARG_PROJECT]
     const template = this.args.template
 
-    cli.action.start('create files')
     await this.hosts.addHost(project, true)
     if (this.flags.local) {
       await this.projectTemplate.createLocalProject(template, project)
@@ -62,14 +60,9 @@ export default class Create extends Command {
     if (this.flags.git) {
       const gitRepo = this.flags.git
       const projectWorkspace = join(await this.env.get(Env.WORKSPACE_DIR), project)
-      if (!fs.existsSync(projectWorkspace)) {
-        if (gitRepo != '') {
-          cli.action.start('checkout codebase')
-          await this.shell.sh(`git clone ${gitRepo} ${projectWorkspace}`)
-        }
+      if (!fs.existsSync(projectWorkspace) && gitRepo != '') {
+        await this.shell.cmd('git', ['clone', gitRepo, projectWorkspace])
       }
     }
-
-    cli.action.stop()
   }
 }
