@@ -18,9 +18,17 @@ export default class FileTransport {
     const dataUpstreamProjectDir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
 
     if (fs.existsSync(join(sourceUpstreamProjectDir, project))) {
+      if (project == 'system') {
+        await fs.moveSync(join(dataUpstreamProjectDir, project, 'local'), join(dataUpstreamProjectDir, 'local_tmp'))
+      }
+
       await fs.removeSync(join(dataUpstreamProjectDir, project))
-      await fs.copy(join(sourceUpstreamProjectDir, project), join(dataUpstreamProjectDir, project))
+      await fs.copySync(join(sourceUpstreamProjectDir, project), join(dataUpstreamProjectDir, project))
       await this.updateDockerComposeFile(join(dataUpstreamProjectDir, project, 'docker-compose.yml'))
+
+      if (project == 'system') {
+        await fs.moveSync(join(dataUpstreamProjectDir, 'local_tmp'), join(dataUpstreamProjectDir, project, 'local'))
+      }
     }
   }
 

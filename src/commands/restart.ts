@@ -1,4 +1,3 @@
-import cli from 'cli-ux'
 import Command from '../base'
 import Const from './../const'
 import {flags} from "@oclif/command"
@@ -31,8 +30,6 @@ export default class Restart extends Command {
     const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
-    cli.action.start('docker restart')
     await docker.restart(project)
-    cli.action.stop()
   }
 }

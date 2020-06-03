@@ -108,6 +108,7 @@ export default class ProjectTemplate {
     await fs.copy(join(fromDir, fromName), join(toDir, toName))
     const dockerFile = join(toDir, toName, 'docker-compose.yml')
     await this.replaceText(dockerFile, fromName, toName)
+    await this.replaceText(dockerFile, '_UPSTREAM_', '_LOCAL_')
     await this.replaceText(
       dockerFile,
       /ipv4_address\:\s*10\.10\.\d+\.\d+/g,
