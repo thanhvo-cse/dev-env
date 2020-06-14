@@ -1,6 +1,7 @@
 import {flags} from '@oclif/command'
 import Command from '../base'
 import Const from './../const'
+import path from "path";
 
 export default class Up extends Command {
   static description = 'Up a project'
@@ -8,9 +9,10 @@ export default class Up extends Command {
   static args = [
     {
       name: Const.ARG_PROJECT,
-      required: true,
+      required: false,
       description: 'project name',
-      hidden: false
+      hidden: false,
+      default: path.basename(__dirname)
     }
   ]
 
