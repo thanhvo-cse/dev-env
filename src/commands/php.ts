@@ -7,15 +7,6 @@ export default class Php extends Command {
 
   static strict = false
 
-  static args = [
-    {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    }
-  ]
-
   static flags = {
     ...Command.flags,
     source: flags.boolean({
@@ -34,12 +25,11 @@ export default class Php extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
     const argv = process.argv.slice(4).filter(e => e != '-d' && e != '--debug')
     let cmd = `php ${argv.join(' ')}`
 
-    await docker.webCmd(project, cmd, this.flags.debug)
+    await docker.webCmd(this.project, cmd, this.flags.debug)
   }
 }

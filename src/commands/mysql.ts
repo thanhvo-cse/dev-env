@@ -10,12 +10,6 @@ export default class Mysql extends Command {
 
   static args = [
     {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    },
-    {
       name: 'command',
       required: true,
       description: 'mysql commands',
@@ -46,7 +40,7 @@ export default class Mysql extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
+    const project = this.project
     const docker = await this.getDocker()
 
     const dbBackupFile = await docker.getDbBackupFile(project)
