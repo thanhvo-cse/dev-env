@@ -22,7 +22,7 @@ export default class Grunt extends Command {
   async run() {
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4)
+    const argv = process.argv.slice(3)
     let cmd = `grunt ${argv.join(' ')}`
 
     await docker.webCmd(this.project, cmd)

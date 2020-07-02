@@ -27,7 +27,7 @@ export default class Magento extends Command {
   async run() {
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4).filter(e => e != '-d' && e != '--debug')
+    const argv = process.argv.slice(3).filter(e => e != '-d' && e != '--debug')
     let cmd = `php bin/magento ${argv.join(' ')}`
 
     await docker.webCmd(this.project, cmd, this.flags.debug)

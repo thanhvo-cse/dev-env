@@ -27,7 +27,7 @@ export default class Magerun extends Command {
   async run() {
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4).filter(e => e != '-d' && e != '--debug')
+    const argv = process.argv.slice(3).filter(e => e != '-d' && e != '--debug')
     let cmd = `magerun ${argv.join(' ')}`
 
     docker.webCmd(this.project, cmd, this.flags.debug)

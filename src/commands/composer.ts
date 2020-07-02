@@ -22,7 +22,7 @@ export default class Composer extends Command {
   async run() {
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4)
+    const argv = process.argv.slice(3)
     await docker.webCmd(this.project, `composer ${argv.join(' ')}`)
   }
 }

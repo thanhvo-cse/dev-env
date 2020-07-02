@@ -22,7 +22,7 @@ export default class Npm extends Command {
   async run() {
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4)
+    const argv = process.argv.slice(3)
     let cmd = `npm ${argv.join(' ')}`
 
     docker.webCmd(this.project, cmd)
