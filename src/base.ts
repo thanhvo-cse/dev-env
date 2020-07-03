@@ -5,12 +5,12 @@ import Env from "./libs/env"
 import CustomConfig from "./libs/customConfig"
 import ProjectConfig from "./libs/projectConfig"
 import Shell from './libs/shell'
-import {join} from "path"
+import {join, basename} from "path"
 import DockerAbstract from "./services/dockerAbstract"
 import DockerSource from "./services/dockerSource"
 import DockerLocal from "./services/dockerLocal"
 import DockerUpstream from "./services/dockerUpstream"
-import { UpdateNotifier } from 'update-notifier';
+import { UpdateNotifier } from 'update-notifier'
 
 export default abstract class extends Command {
   protected env: Env = new Env()
@@ -19,6 +19,8 @@ export default abstract class extends Command {
 
   protected args: any
   protected flags: any
+
+  protected project: any
 
   static flags = {
     help: flags.help({char: 'h'})
@@ -38,6 +40,8 @@ export default abstract class extends Command {
     this.env.set(Env.DATA_LOCAL_PROJECT_DIR, join(config.dataDir, Const.LOCAL_PROJECTS_DIR))
     this.env.set(Env.DATA_LOCAL_DB_DIR, join(config.dataDir, Const.LOCAL_DB_DIR))
     this.env.set(Env.DATA_LOCAL_DB_BACKUP_DIR, join(config.dataDir, Const.LOCAL_DB_BACKUP_DIR))
+
+    this.project = basename(process.cwd())
 
     const pkg = require(join(config.root, './package.json'));
     const notifier = new UpdateNotifier({pkg});
