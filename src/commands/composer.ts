@@ -7,15 +7,6 @@ export default class Composer extends Command {
 
   static strict = false
 
-  static args = [
-    {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    }
-  ]
-
   static flags = {
     ...Command.flags,
     source: flags.boolean({
@@ -29,10 +20,9 @@ export default class Composer extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
-    const argv = process.argv.slice(4)
-    await docker.webCmd(project, `composer ${argv.join(' ')}`)
+    const argv = process.argv.slice(3)
+    await docker.webCmd(this.project, `composer ${argv.join(' ')}`)
   }
 }
