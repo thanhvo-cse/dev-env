@@ -19,7 +19,7 @@ $ npm install -g @thanhvo-cse/dev-env
 $ dev-env COMMAND
 running command...
 $ dev-env (-v|--version|version)
-@thanhvo-cse/dev-env/0.3.0 darwin-x64 node-v12.14.0
+@thanhvo-cse/dev-env/0.3.1 darwin-x64 node-v12.14.0
 $ dev-env --help [COMMAND]
 USAGE
   $ dev-env COMMAND
@@ -45,7 +45,7 @@ USAGE
 * [`dev-env ls`](#dev-env-ls)
 * [`dev-env magento`](#dev-env-magento)
 * [`dev-env magerun`](#dev-env-magerun)
-* [`dev-env mysql COMMAND [FILE]`](#dev-env-mysql-command-file)
+* [`dev-env mysql PROJECT COMMAND [FILE]`](#dev-env-mysql-project-command-file)
 * [`dev-env npm`](#dev-env-npm)
 * [`dev-env php`](#dev-env-php)
 * [`dev-env rebuild PROJECT`](#dev-env-rebuild-project)
@@ -69,7 +69,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/artisan.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/artisan.ts)_
+_See code: [src/commands/artisan.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/artisan.ts)_
 
 ## `dev-env cleanup`
 
@@ -83,7 +83,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/cleanup.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/cleanup.ts)_
+_See code: [src/commands/cleanup.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/cleanup.ts)_
 
 ## `dev-env composer`
 
@@ -99,7 +99,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/composer.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/composer.ts)_
+_See code: [src/commands/composer.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/composer.ts)_
 
 ## `dev-env configure:docker-source [PATH]`
 
@@ -116,7 +116,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure/docker-source.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/configure/docker-source.ts)_
+_See code: [src/commands/configure/docker-source.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/docker-source.ts)_
 
 ## `dev-env configure:gdrive [KEY]`
 
@@ -133,7 +133,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure/gdrive.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/configure/gdrive.ts)_
+_See code: [src/commands/configure/gdrive.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/gdrive.ts)_
 
 ## `dev-env configure:network [NAME]`
 
@@ -150,7 +150,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure/network.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/configure/network.ts)_
+_See code: [src/commands/configure/network.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/network.ts)_
 
 ## `dev-env configure:workspace [PATH]`
 
@@ -167,7 +167,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure/workspace.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/configure/workspace.ts)_
+_See code: [src/commands/configure/workspace.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/workspace.ts)_
 
 ## `dev-env configure:xdebug-ide-key [KEY]`
 
@@ -184,7 +184,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure/xdebug-ide-key.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/configure/xdebug-ide-key.ts)_
+_See code: [src/commands/configure/xdebug-ide-key.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/xdebug-ide-key.ts)_
 
 ## `dev-env create PROJECT TEMPLATE`
 
@@ -204,7 +204,7 @@ OPTIONS
   -l, --local    locally
 ```
 
-_See code: [src/commands/create.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/create.ts)_
+_See code: [src/commands/create.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/create.ts)_
 
 ## `dev-env down PROJECT`
 
@@ -223,7 +223,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/down.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/down.ts)_
+_See code: [src/commands/down.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/down.ts)_
 
 ## `dev-env export PROJECT`
 
@@ -241,7 +241,7 @@ OPTIONS
   -h, --help      show CLI help
 ```
 
-_See code: [src/commands/export.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/export.ts)_
+_See code: [src/commands/export.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/export.ts)_
 
 ## `dev-env grunt`
 
@@ -257,7 +257,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/grunt.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/grunt.ts)_
+_See code: [src/commands/grunt.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/grunt.ts)_
 
 ## `dev-env help [COMMAND]`
 
@@ -291,7 +291,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/import.ts)_
+_See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/import.ts)_
 
 ## `dev-env ls`
 
@@ -307,7 +307,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/ls.ts)_
 
 ## `dev-env magento`
 
@@ -324,7 +324,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/magento.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/magento.ts)_
+_See code: [src/commands/magento.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/magento.ts)_
 
 ## `dev-env magerun`
 
@@ -341,17 +341,18 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/magerun.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/magerun.ts)_
+_See code: [src/commands/magerun.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/magerun.ts)_
 
-## `dev-env mysql COMMAND [FILE]`
+## `dev-env mysql PROJECT COMMAND [FILE]`
 
 Mysql
 
 ```
 USAGE
-  $ dev-env mysql COMMAND [FILE]
+  $ dev-env mysql PROJECT COMMAND [FILE]
 
 ARGUMENTS
+  PROJECT  project name
   COMMAND  (backup|restore) mysql commands
   FILE     file path
 
@@ -361,7 +362,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/mysql.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/mysql.ts)_
+_See code: [src/commands/mysql.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/mysql.ts)_
 
 ## `dev-env npm`
 
@@ -377,7 +378,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/npm.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/npm.ts)_
+_See code: [src/commands/npm.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/npm.ts)_
 
 ## `dev-env php`
 
@@ -394,7 +395,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/php.ts)_
+_See code: [src/commands/php.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/php.ts)_
 
 ## `dev-env rebuild PROJECT`
 
@@ -413,7 +414,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/rebuild.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/rebuild.ts)_
+_See code: [src/commands/rebuild.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/rebuild.ts)_
 
 ## `dev-env remove PROJECT`
 
@@ -431,7 +432,7 @@ OPTIONS
   -l, --local  locally
 ```
 
-_See code: [src/commands/remove.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/remove.ts)_
+_See code: [src/commands/remove.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/remove.ts)_
 
 ## `dev-env restart PROJECT`
 
@@ -450,7 +451,7 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/restart.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/restart.ts)_
+_See code: [src/commands/restart.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/restart.ts)_
 
 ## `dev-env shell PROJECT`
 
@@ -467,7 +468,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/shell.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/shell.ts)_
+_See code: [src/commands/shell.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/shell.ts)_
 
 ## `dev-env up PROJECT`
 
@@ -486,5 +487,5 @@ OPTIONS
   -s, --source  with source
 ```
 
-_See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.0/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/up.ts)_
 <!-- commandsstop -->
