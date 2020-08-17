@@ -12,7 +12,6 @@ export default class Env {
   static readonly DATA_LOCAL_DB_DIR: string = 'DATA_LOCAL_DB_DIR'
   static readonly DATA_LOCAL_DB_BACKUP_DIR: string = 'DATA_LOCAL_DB_BACKUP_DIR'
 
-  static readonly REMOTE_HOST: string = 'REMOTE_HOST'
   static readonly PROJECT_NAME: string = 'PROJECT_NAME'
 
   async set(key: string, value: string) {
