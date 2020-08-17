@@ -33,7 +33,6 @@ USAGE
 * [`dev-env composer`](#dev-env-composer)
 * [`dev-env configure:docker-source [PATH]`](#dev-env-configuredocker-source-path)
 * [`dev-env configure:gdrive [KEY]`](#dev-env-configuregdrive-key)
-* [`dev-env configure:network [NAME]`](#dev-env-configurenetwork-name)
 * [`dev-env configure:workspace [PATH]`](#dev-env-configureworkspace-path)
 * [`dev-env configure:xdebug-ide-key [KEY]`](#dev-env-configurexdebug-ide-key-key)
 * [`dev-env create PROJECT TEMPLATE`](#dev-env-create-project-template)
@@ -134,23 +133,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/configure/gdrive.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/gdrive.ts)_
-
-## `dev-env configure:network [NAME]`
-
-Set or show network name
-
-```
-USAGE
-  $ dev-env configure:network [NAME]
-
-ARGUMENTS
-  NAME  Set the network name
-
-OPTIONS
-  -h, --help  show CLI help
-```
-
-_See code: [src/commands/configure/network.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.3.1/src/commands/configure/network.ts)_
 
 ## `dev-env configure:workspace [PATH]`
 
