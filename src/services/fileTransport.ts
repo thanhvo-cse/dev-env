@@ -19,7 +19,11 @@ export default class FileTransport {
 
     if (fs.existsSync(join(sourceUpstreamProjectDir, project))) {
       if (project == 'system') {
-        await fs.moveSync(join(dataUpstreamProjectDir, project, 'local'), join(dataUpstreamProjectDir, 'local_tmp'))
+        await fs.moveSync(
+          join(dataUpstreamProjectDir, project, 'local'),
+          join(dataUpstreamProjectDir, 'local_tmp'),
+          { overwrite: true }
+        )
       }
 
       await fs.removeSync(join(dataUpstreamProjectDir, project))
@@ -27,7 +31,11 @@ export default class FileTransport {
       await this.updateDockerComposeFile(join(dataUpstreamProjectDir, project, 'docker-compose.yml'))
 
       if (project == 'system') {
-        await fs.moveSync(join(dataUpstreamProjectDir, 'local_tmp'), join(dataUpstreamProjectDir, project, 'local'))
+        await fs.moveSync(
+          join(dataUpstreamProjectDir, 'local_tmp'),
+          join(dataUpstreamProjectDir, project, 'local'),
+          { overwrite: true }
+        )
       }
     }
   }
