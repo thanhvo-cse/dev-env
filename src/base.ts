@@ -10,7 +10,6 @@ import DockerAbstract from "./services/dockerAbstract"
 import DockerSource from "./services/dockerSource"
 import DockerLocal from "./services/dockerLocal"
 import DockerUpstream from "./services/dockerUpstream"
-import { UpdateNotifier } from 'update-notifier'
 
 export default abstract class extends Command {
   protected env: Env = new Env()
@@ -42,10 +41,6 @@ export default abstract class extends Command {
     this.env.set(Env.DATA_LOCAL_DB_BACKUP_DIR, join(config.dataDir, Const.LOCAL_DB_BACKUP_DIR))
 
     this.project = basename(process.cwd())
-
-    const pkg = require(join(config.root, './package.json'));
-    const notifier = new UpdateNotifier({pkg});
-    notifier.notify();
   }
 
   async init() {
