@@ -10,6 +10,7 @@ dev-env tool
 
 <!-- toc -->
 * [Usage](#usage)
+* [Autocomplete](#autocomplete)
 * [Commands](#commands)
 <!-- tocstop -->
 # Usage
@@ -26,6 +27,22 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+# Autocomplete
+<!-- autocomplete -->
+```dev-env autocomplete [SHELL]``` with [SHELL] support bash & zsh
+
+Add the autocomplete env var to your zsh profile and source it
+- zsh: `printf "$(dev-env autocomplete:script zsh)" >> ~/.zshrc; source ~/.zshrc`
+- bash: `printf "$(dev-env autocomplete:script bash)" >> ~/.bashrc; source ~/.bashrc`
+
+Test it out, e.g.
+- zsh:
+```dev-env <TAB>                 # Command completion```
+```dev-env command --<TAB>       # Flag completion```
+- bash
+```dev-env <TAB><TAB>                 # Command completion```
+```dev-env command --<TAB><TAB>       # Flag completion```
+<!--autocompletestop -->
 # Commands
 <!-- commands -->
 * [`dev-env artisan`](#dev-env-artisan)
