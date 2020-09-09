@@ -17,6 +17,7 @@ export default class Cleanup extends Command {
     }
 
     await this.shell.cmd('docker', ['network', 'prune', '-f'])
+    await this.shell.cmd('docker', ['volume', 'prune', '-f'])
 
     let images = (await this.shell.script(
       `docker images | grep "<none>" | awk "{print \\$3}"`,

@@ -57,6 +57,8 @@ export default abstract class extends Command {
 
     if (this.args.hasOwnProperty(Const.ARG_PROJECT)) {
       this.env.set(Env.PROJECT_NAME, this.args[Const.ARG_PROJECT])
+    } else {
+      this.env.set(Env.PROJECT_NAME, this.project)
     }
   }
 
@@ -85,5 +87,22 @@ export default abstract class extends Command {
     }
 
     return config
+  }
+
+  protected async getProjectDir(projectParam: string = ''): Promise<string> {
+    let dir: string
+    if (this.flags.source) {
+      dir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
+    } else if (this.flags.local) {
+      dir = await this.env.get(Env.DATA_LOCAL_PROJECT_DIR)
+    } else {
+      dir = await this.env.get(Env.DATA_UPSTREAM_PROJECT_DIR)
+    }
+
+    if (projectParam != '') {
+      return join(dir, projectParam)
+    }
+
+    return join(dir, this.project)
   }
 }
