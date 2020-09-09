@@ -9,10 +9,24 @@ dev-env tool
 [![License](https://img.shields.io/npm/l/dev-env.svg)](https://github.com/thanhvo-cse/dev-env/blob/master/package.json)
 
 <!-- toc -->
+* [Installation](#installation)
 * [Usage](#usage)
 * [Autocomplete](#autocomplete)
 * [Commands](#commands)
 <!-- tocstop -->
+# Installation
+<!-- installation -->
+## `dev-env`
+```sh-session
+$ npm i -g @thanhvo-cse/dev-env
+```
+## `docker-sync`
+```sh-session
+$ gem install docker-sync
+$ brew install unison
+$ brew install eugenmayer/dockersync/unox
+```
+<!-- installationstop -->
 # Usage
 <!-- usage -->
 ```sh-session
