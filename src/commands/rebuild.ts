@@ -5,15 +5,6 @@ import {flags} from "@oclif/command"
 export default class Rebuild extends Command {
   static description = 'Rebuild a project'
 
-  static args = [
-    {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    }
-  ]
-
   static flags = {
     ...Command.flags,
     source: flags.boolean({
@@ -27,9 +18,8 @@ export default class Rebuild extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
-    await docker.rebuild(project)
+    await docker.rebuild(this.project)
   }
 }

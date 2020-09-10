@@ -3,16 +3,7 @@ import Const from './../const'
 import {flags} from "@oclif/command"
 
 export default class Restart extends Command {
-  static description = 'Restart a project'
-
-  static args = [
-    {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    }
-  ]
+  static description = 'Refresh a project'
 
   static flags = {
     ...Command.flags,
@@ -27,9 +18,7 @@ export default class Restart extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
-
-    await docker.restart(project)
+    await docker.restart(this.project)
   }
 }

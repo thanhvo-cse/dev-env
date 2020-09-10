@@ -40,7 +40,7 @@ export default abstract class DockerAbstract {
   }
 
   async restart(project: string) {
-    await this.dockerCompose(project, 'restart -d')
+    await this.shell.cmd('docker', ['container', 'restart', `php_${project}`])
   }
 
   async rebuild(project: string) {

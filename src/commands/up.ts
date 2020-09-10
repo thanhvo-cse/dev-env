@@ -30,6 +30,9 @@ export default class Up extends Command {
     const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
+    const projectDir = await this.getProjectDir(project)
+    await this.shell.script(`cd ${projectDir} && docker-sync start`)
+
     await docker.up(project)
   }
 }

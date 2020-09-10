@@ -27,7 +27,7 @@ export default class DockerSource extends DockerAbstract {
   }
 
   public async getDbBackupFile(project: string) {
-    const dbBackupDir = await this.env.get(Env.DATA_UPSTREAM_DB_BACKUP_DIR)
+    const dbBackupDir = await this.env.get(Env.SOURCE_UPSTREAM_PROJECT_DIR)
     return join(dbBackupDir, project, Const.DB_FILE)
   }
 }
