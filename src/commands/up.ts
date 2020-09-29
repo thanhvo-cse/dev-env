@@ -23,6 +23,11 @@ export default class Up extends Command {
     local: flags.boolean({
       char: 'l',
       description: 'locally'
+    }),
+    open: flags.boolean({
+      char: 'o',
+      description: 'Open project local domain on default local browser',
+      default: false
     })
   }
 
@@ -31,8 +36,12 @@ export default class Up extends Command {
     const docker = await this.getDocker()
 
     const projectDir = await this.getProjectDir(project)
+    const projectDomain = `https://local-${project}.legato.co`
     await this.shell.script(`cd ${projectDir} && docker-sync start`)
 
     await docker.up(project)
+    console.log('')
+    console.log(`Project started on ${projectDomain}`)
+    this.shell.script(`open ${projectDomain}`)
   }
 }
