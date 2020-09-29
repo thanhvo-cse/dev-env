@@ -10,12 +10,6 @@ export default class Mysql extends Command {
 
   static args = [
     {
-      name: Const.ARG_PROJECT,
-      required: true,
-      description: 'project name',
-      hidden: false
-    },
-    {
       name: 'command',
       required: true,
       description: 'mysql commands',
@@ -46,10 +40,9 @@ export default class Mysql extends Command {
   }
 
   async run() {
-    const project = this.args[Const.ARG_PROJECT]
     const docker = await this.getDocker()
 
-    const dbBackupFile = await docker.getDbBackupFile(project)
+    const dbBackupFile = await docker.getDbBackupFile(this.project)
     const dbBackupFileBk = normalize(dbBackupFile) + '.bk'
 
     if (this.args.file != undefined && fs.existsSync(dbBackupFile)) {
@@ -57,7 +50,7 @@ export default class Mysql extends Command {
     }
 
     if (this.args.command == 'backup') {
-      await docker.dbBackup(project)
+      await docker.dbBackup(this.project)
 
       if (this.args.file != undefined) {
         await fs.copySync(dbBackupFile, this.args.file, {overwrite: true})
@@ -67,7 +60,7 @@ export default class Mysql extends Command {
         await fs.copySync(this.args.file, dbBackupFile, {overwrite: true})
       }
 
-      await docker.dbRestore(project)
+      await docker.dbRestore(this.project)
     }
 
     if (this.args.file != undefined && fs.existsSync(dbBackupFileBk)) {
