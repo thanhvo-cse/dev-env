@@ -36,7 +36,7 @@ export default class Export extends Command {
 
     await this.fileTransport.initUpstreamDir(project)
 
-    await docker.push(project)
+    //await docker.push(project)
 
     await this.fileTransport.copySourceToUpstream('system')
     await this.fileTransport.copySourceToUpstream(project)

@@ -76,7 +76,7 @@ Test it out, e.g.
 * [`dev-env ls`](#dev-env-ls)
 * [`dev-env magento`](#dev-env-magento)
 * [`dev-env magerun`](#dev-env-magerun)
-* [`dev-env mysql PROJECT COMMAND [FILE]`](#dev-env-mysql-project-command-file)
+* [`dev-env mysql COMMAND [FILE]`](#dev-env-mysql-command-file)
 * [`dev-env npm`](#dev-env-npm)
 * [`dev-env php`](#dev-env-php)
 * [`dev-env rebuild`](#dev-env-rebuild)
@@ -381,16 +381,15 @@ OPTIONS
 
 _See code: [src/commands/magerun.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.6.0/src/commands/magerun.ts)_
 
-## `dev-env mysql PROJECT COMMAND [FILE]`
+## `dev-env mysql COMMAND [FILE]`
 
 Mysql
 
 ```
 USAGE
-  $ dev-env mysql PROJECT COMMAND [FILE]
+  $ dev-env mysql COMMAND [FILE]
 
 ARGUMENTS
-  PROJECT  project name
   COMMAND  (backup|restore) mysql commands
   FILE     file path
 
@@ -532,6 +531,7 @@ ARGUMENTS
 OPTIONS
   -h, --help    show CLI help
   -l, --local   locally
+  -o, --open    Open project local domain on default local browser
   -s, --source  with source
 ```
 
