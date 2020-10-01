@@ -41,6 +41,6 @@ export default class Up extends Command {
 
     await docker.up(project)
     console.log(`Project started on ${projectDomain}`)
-    this.shell.script(`open ${projectDomain}`)
+    this.flags.open && setTimeout(() => this.shell.script(`open ${projectDomain}`), 500)
   }
 }
