@@ -32,9 +32,9 @@ export default class Down extends Command {
 
     await docker.down(project)
 
-    if (project != 'all') {
-      const projectDir = await this.getProjectDir(project)
-      await this.shell.script(`cd ${projectDir} && docker-sync stop`)
-    }
+    // if (project != 'all') {
+    //   const projectDir = await this.getProjectDir(project)
+    //   await this.shell.script(`cd ${projectDir} && docker-sync stop`)
+    // }
   }
 }
