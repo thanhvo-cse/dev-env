@@ -67,6 +67,7 @@ Test it out, e.g.
 * [`dev-env grunt`](#dev-env-grunt)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
 * [`dev-env import PROJECT`](#dev-env-import-project)
+* [`dev-env logs`](#dev-env-logs)
 * [`dev-env ls`](#dev-env-ls)
 * [`dev-env magento`](#dev-env-magento)
 * [`dev-env magerun`](#dev-env-magerun)
@@ -324,6 +325,22 @@ OPTIONS
 ```
 
 _See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/import.ts)_
+
+## `dev-env logs`
+
+Logs
+
+```
+USAGE
+  $ dev-env logs
+
+OPTIONS
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
+```
+
+_See code: [src/commands/logs.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/logs.ts)_
 
 ## `dev-env ls`
 

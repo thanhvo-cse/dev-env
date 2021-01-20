@@ -2,8 +2,8 @@ import Command from '../base'
 import Const from './../const'
 import {flags} from "@oclif/command"
 
-export default class Yarn extends Command {
-  static description = 'Yarn'
+export default class Logs extends Command {
+  static description = 'Logs'
 
   static strict = false
 
@@ -23,8 +23,8 @@ export default class Yarn extends Command {
     const docker = await this.getDocker()
 
     const argv = process.argv.slice(3)
-    let cmd = `yarn ${argv.join(' ')}`
+    let cmd = `docker logs php_${this.project} ${argv.join(' ')}`
 
-    await docker.webCmd(this.project, cmd)
+    await this.shell.script(cmd)
   }
 }
