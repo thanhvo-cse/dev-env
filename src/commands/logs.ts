@@ -1,8 +1,9 @@
-import {flags} from '@oclif/command'
 import Command from '../base'
+import Const from './../const'
+import {flags} from "@oclif/command"
 
-export default class Sync extends Command {
-  static description = 'Docker sync'
+export default class Logs extends Command {
+  static description = 'Logs'
 
   static strict = false
 
@@ -19,10 +20,11 @@ export default class Sync extends Command {
   }
 
   async run() {
-    const argv = process.argv.slice(3)
-    let cmd = `docker-sync ${argv.join(' ')}`
+    const docker = await this.getDocker()
 
-    const projectDir = await this.getProjectDir()
-    await this.shell.script(`cd ${projectDir} && ${cmd}`)
+    const argv = process.argv.slice(3)
+    let cmd = `docker logs php_${this.project} ${argv.join(' ')}`
+
+    await this.shell.script(cmd)
   }
 }

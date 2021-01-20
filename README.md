@@ -20,12 +20,6 @@ dev-env tool
 ```sh-session
 $ npm i -g @thanhvo-cse/dev-env
 ```
-## `docker-sync`
-```sh-session
-$ gem install docker-sync
-$ brew install unison
-$ brew install eugenmayer/dockersync/unox
-```
 <!-- installationstop -->
 # Usage
 <!-- usage -->
@@ -73,6 +67,7 @@ Test it out, e.g.
 * [`dev-env grunt`](#dev-env-grunt)
 * [`dev-env help [COMMAND]`](#dev-env-help-command)
 * [`dev-env import PROJECT`](#dev-env-import-project)
+* [`dev-env logs`](#dev-env-logs)
 * [`dev-env ls`](#dev-env-ls)
 * [`dev-env magento`](#dev-env-magento)
 * [`dev-env magerun`](#dev-env-magerun)
@@ -83,8 +78,8 @@ Test it out, e.g.
 * [`dev-env remove PROJECT`](#dev-env-remove-project)
 * [`dev-env restart`](#dev-env-restart)
 * [`dev-env shell PROJECT`](#dev-env-shell-project)
-* [`dev-env sync`](#dev-env-sync)
 * [`dev-env up PROJECT`](#dev-env-up-project)
+* [`dev-env yarn`](#dev-env-yarn)
 
 ## `dev-env artisan`
 
@@ -331,6 +326,22 @@ OPTIONS
 
 _See code: [src/commands/import.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/import.ts)_
 
+## `dev-env logs`
+
+Logs
+
+```
+USAGE
+  $ dev-env logs
+
+OPTIONS
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
+```
+
+_See code: [src/commands/logs.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/logs.ts)_
+
 ## `dev-env ls`
 
 List imported projects
@@ -501,22 +512,6 @@ OPTIONS
 
 _See code: [src/commands/shell.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/shell.ts)_
 
-## `dev-env sync`
-
-Docker sync
-
-```
-USAGE
-  $ dev-env sync
-
-OPTIONS
-  -h, --help    show CLI help
-  -l, --local   locally
-  -s, --source  with source
-```
-
-_See code: [src/commands/sync.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/sync.ts)_
-
 ## `dev-env up PROJECT`
 
 Up a project
@@ -536,4 +531,20 @@ OPTIONS
 ```
 
 _See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/up.ts)_
+
+## `dev-env yarn`
+
+Yarn
+
+```
+USAGE
+  $ dev-env yarn
+
+OPTIONS
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
+```
+
+_See code: [src/commands/yarn.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/yarn.ts)_
 <!-- commandsstop -->
