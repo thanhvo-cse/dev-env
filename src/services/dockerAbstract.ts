@@ -95,7 +95,7 @@ export default abstract class DockerAbstract {
       return
     }
 
-    await this.shell.cmd('docker', ['exec', '-it', `${container}_${project}`, 'bash', '-c', cmd])
+    await this.shell.cmd('docker', ['exec', '-it', `${container}_${project}`, 'sh', '-c', cmd])
   }
 
   protected async abstract getProjectCompose(project: string)
