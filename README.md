@@ -20,12 +20,6 @@ dev-env tool
 ```sh-session
 $ npm i -g @thanhvo-cse/dev-env
 ```
-## `docker-sync`
-```sh-session
-$ gem install docker-sync
-$ brew install unison
-$ brew install eugenmayer/dockersync/unox
-```
 <!-- installationstop -->
 # Usage
 <!-- usage -->
@@ -83,8 +77,8 @@ Test it out, e.g.
 * [`dev-env remove PROJECT`](#dev-env-remove-project)
 * [`dev-env restart`](#dev-env-restart)
 * [`dev-env shell PROJECT`](#dev-env-shell-project)
-* [`dev-env sync`](#dev-env-sync)
 * [`dev-env up PROJECT`](#dev-env-up-project)
+* [`dev-env yarn`](#dev-env-yarn)
 
 ## `dev-env artisan`
 
@@ -501,22 +495,6 @@ OPTIONS
 
 _See code: [src/commands/shell.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/shell.ts)_
 
-## `dev-env sync`
-
-Docker sync
-
-```
-USAGE
-  $ dev-env sync
-
-OPTIONS
-  -h, --help    show CLI help
-  -l, --local   locally
-  -s, --source  with source
-```
-
-_See code: [src/commands/sync.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/sync.ts)_
-
 ## `dev-env up PROJECT`
 
 Up a project
@@ -536,4 +514,20 @@ OPTIONS
 ```
 
 _See code: [src/commands/up.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/up.ts)_
+
+## `dev-env yarn`
+
+Yarn
+
+```
+USAGE
+  $ dev-env yarn
+
+OPTIONS
+  -h, --help    show CLI help
+  -l, --local   locally
+  -s, --source  with source
+```
+
+_See code: [src/commands/yarn.ts](https://github.com/thanhvo-cse/dev-env/blob/v0.7.1/src/commands/yarn.ts)_
 <!-- commandsstop -->
